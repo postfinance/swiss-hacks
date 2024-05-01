@@ -1,0 +1,15 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        mavenLocal()
+    }
+    plugins {
+        id "${quarkusPluginId}" version "${quarkusPluginVersion}"
+
+        id "com.diffplug.spotless" version "${spotlessPluginVersion}"
+        id "com.github.ben-manes.versions" version "${versionsVersion}"
+    }
+}
+
+rootProject.name='swiss-hacks-2024'

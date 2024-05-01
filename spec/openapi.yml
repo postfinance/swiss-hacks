@@ -1,0 +1,333 @@
+openapi: 3.0.0
+info:
+  title: Online Banking API
+  description: This API allows customers to manage their banking services online.
+  version: "1.0.0"
+servers:
+  - url: 'https://api.onlinebanking.com/v1'
+    description: Production server
+paths:
+  /customers/register:
+    post:
+      summary: Register a new customer
+      description: Allows a new customer to register for an online banking account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRegistration'
+      responses:
+        '201':
+          description: Customer registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationResponse'
+        '400':
+          description: Invalid input
+  /accounts/balance:
+    get:
+      summary: Check account balance
+      description: Retrieve the current balance of the customer's account.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Account balance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountBalance'
+        '401':
+          description: Unauthorized
+  /transactions/transfer:
+    post:
+      summary: Transfer funds
+      description: Transfer funds to another account.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FundTransfer'
+      responses:
+        '200':
+          description: Transfer successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferResponse'
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized
+  /bills/pay:
+    post:
+      summary: Pay bills
+      description: Pay a bill using the customer's bank account.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillPayment'
+      responses:
+        '200':
+          description: Bill paid successfully
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized
+  /transactions/history:
+    get:
+      summary: View transaction history
+      description: Get a list of recent transactions.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Transaction history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHistory'
+        '401':
+          description: Unauthorized
+  /accounts/statements:
+    get:
+      summary: Download account statement
+      description: Download an account statement for a specified period.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: period
+          in: query
+          required: true
+          schema:
+            type: string
+            example: '2022-01'
+          description: Statement period in YYYY-MM format
+      responses:
+        '200':
+          description: PDF account statement
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid period format
+        '401':
+          description: Unauthorized
+  /customers/password:
+    put:
+      summary: Change password
+      description: Change the customer's password.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+      responses:
+        '200':
+          description: Password changed successfully
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized
+  /cards/manage:
+    patch:
+      summary: Manage cards
+      description: Activate, block, or replace cards.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardManagement'
+      responses:
+        '200':
+          description: Card status updated
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+  /customers/settings:
+    put:
+      summary: Update account settings
+      description: Update personal details and account preferences.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountSettingsUpdate'
+      responses:
+        '200':
+          description: Settings updated successfully
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized
+  /support/contact:
+    get:
+      summary: Contact customer support
+      description: Options to reach out to customer support via chat, email, or phone.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Support contact options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportContact'
+        '401':
+          description: Unauthorized
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CustomerRegistration:
+      type: object
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+        - dateOfBirth
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+    RegistrationResponse:
+      type: object
+      properties:
+        customerId:
+          type: string
+        message:
+          type: string
+    AccountBalance:
+      type: object
+      properties:
+        accountId:
+          type: string
+        balance:
+          type: number
+          format: float
+    FundTransfer:
+      type: object
+      required:
+        - recipientId
+        - amount
+      properties:
+        recipientId:
+          type: string
+        amount:
+          type: number
+          format: float
+    TransferResponse:
+      type: object
+      properties:
+        transactionId:
+          type: string
+        status:
+          type: string
+    BillPayment:
+      type: object
+      required:
+        - payeeId
+        - amount
+      properties:
+        payeeId:
+          type: string
+        amount:
+          type: number
+          format: float
+    TransactionHistory:
+      type: array
+      items:
+        type: object
+        required:
+          - transactionId
+          - date
+          - amount
+          - type
+        properties:
+          transactionId:
+            type: string
+          date:
+            type: string
+            format: date
+          amount:
+            type: number
+            format: float
+          type:
+            type: string
+    PasswordChange:
+      type: object
+      required:
+        - currentPassword
+        - newPassword
+      properties:
+        currentPassword:
+          type: string
+          format: password
+        newPassword:
+          type: string
+          format: password
+    CardManagement:
+      type: object
+      required:
+        - cardId
+        - action
+      properties:
+        cardId:
+          type: string
+        action:
+          type: string
+          enum:
+            - activate
+            - block
+            - replace
+    AccountSettingsUpdate:
+      type: object
+      properties:
+        contactInfo:
+          type: string
+        notificationPreferences:
+          type: boolean
+    SupportContact:
+      type: object
+      properties:
+        chat:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
