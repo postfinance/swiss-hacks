@@ -1,4 +1,4 @@
-package ch.postfinance;
+package ch.postfinance.swiss.hacks.resource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
@@ -11,10 +11,10 @@ class GreetingResourceTest {
     @Test
     void testHelloEndpoint() {
         given()
-          .when().get("/hello")
-          .then()
-             .statusCode(200)
-             .body(is("Hello from Quarkus REST"));
+                .when().get("/hello")
+                .then()
+                .statusCode(200)
+                .body(is("Hello from Quarkus REST"));
     }
 
 }

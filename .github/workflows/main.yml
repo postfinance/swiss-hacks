@@ -9,12 +9,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  gradle:
-    name: 'Gradle Wrapper Validation'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: gradle/wrapper-validation-action@v3
   app:
     name: 'Build and Test'
     runs-on: ubuntu-latest
@@ -32,11 +26,9 @@ jobs:
           java-version: 21
       - uses: actions/cache@v4
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
-            ${{ runner.os }}-gradle
+            ${{ runner.os }}-maven
       - name: Run Tests
-        run: ./gradlew check --no-daemon
+        run: ./mvnw verify

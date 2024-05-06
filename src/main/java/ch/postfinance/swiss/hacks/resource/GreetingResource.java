@@ -1,4 +1,4 @@
-package ch.postfinance;
+package ch.postfinance.swiss.hacks.resource;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
