@@ -4,8 +4,8 @@ info:
   description: This API allows customers to manage their banking services online.
   version: "1.0.0"
 servers:
-  - url: 'https://api.onlinebanking.com/v1'
-    description: Production server
+  - url: 'http://localhost:8080'
+    description: Development server
 paths:
   /customers/register:
     post:
@@ -162,25 +162,6 @@ paths:
           description: Invalid request
         '401':
           description: Unauthorized
-  /customers/settings:
-    put:
-      summary: Update account settings
-      description: Update personal details and account preferences.
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccountSettingsUpdate'
-      responses:
-        '200':
-          description: Settings updated successfully
-        '400':
-          description: Invalid input
-        '401':
-          description: Unauthorized
   /support/contact:
     get:
       summary: Contact customer support
@@ -206,18 +187,10 @@ components:
     CustomerRegistration:
       type: object
       required:
-        - email
-        - password
         - firstName
         - lastName
         - dateOfBirth
       properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
         firstName:
           type: string
         lastName:
@@ -225,12 +198,18 @@ components:
         dateOfBirth:
           type: string
           format: date
+          example: 2017-07-21
     RegistrationResponse:
       type: object
+      required:
+        - iban
+        - password
       properties:
-        customerId:
+        iban:
           type: string
-        message:
+          minLength: 22
+          maxLength: 22
+        password:
           type: string
     AccountBalance:
       type: object
