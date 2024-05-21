@@ -3,7 +3,7 @@ package ch.postfinance.swiss.hacks.resource;
 import ch.postfinance.swiss.hacks.resource.beans.CustomerRegistration;
 import ch.postfinance.swiss.hacks.resource.beans.PasswordChange;
 import ch.postfinance.swiss.hacks.resource.beans.RegistrationResponse;
-import ch.postfinance.swiss.hacks.service.AccountService;
+import ch.postfinance.swiss.hacks.service.LoginService;
 import jakarta.inject.Inject;
 
 import java.time.Instant;
@@ -15,14 +15,14 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 public class CustomersResourceImpl implements CustomersResource {
 
     @Inject
-    AccountService accountService;
+    LoginService loginService;
 
     @Override
     public RegistrationResponse registerANewCustomer(CustomerRegistration data) {
-        var registrationInformation = accountService.register(data.getFirstName(), data.getLastName(), parseDateToInstant(data.getDateOfBirth()));
+        var registrationInformation = loginService.register(data.getFirstName(), data.getLastName(), parseDateToInstant(data.getDateOfBirth()));
 
         var registrationResponse = new RegistrationResponse();
-        registrationResponse.setIban(registrationInformation.account().iban);
+        registrationResponse.setUsername(registrationInformation.login().username);
         registrationResponse.setPassword(registrationInformation.password());
         return registrationResponse;
     }

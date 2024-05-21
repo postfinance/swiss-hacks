@@ -29,7 +29,7 @@ paths:
   /accounts/balance:
     get:
       summary: Check account balance
-      description: Retrieve the current balance of the customer's account.
+      description: Retrieve the current balance of the customer's accounts.
       security:
         - bearerAuth: []
       responses:
@@ -38,7 +38,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AccountBalance'
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountBalance'
         '401':
           description: Unauthorized
   /transactions/transfer:
@@ -193,8 +195,10 @@ components:
       properties:
         firstName:
           type: string
+          maxLength: 32
         lastName:
           type: string
+          maxLength: 32
         dateOfBirth:
           type: string
           format: date
@@ -202,23 +206,26 @@ components:
     RegistrationResponse:
       type: object
       required:
-        - iban
+        - username
         - password
       properties:
-        iban:
+        username:
           type: string
-          minLength: 22
-          maxLength: 22
+          maxLength: 65
+          description: A combination of `${firstName}.${lastName}`.
         password:
           type: string
     AccountBalance:
       type: object
+      required:
+        - iban
+        - balance
       properties:
-        accountId:
+        iban:
           type: string
         balance:
-          type: number
-          format: float
+          type: string
+          format: decimal
     FundTransfer:
       type: object
       required:

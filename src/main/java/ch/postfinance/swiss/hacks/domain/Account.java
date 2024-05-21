@@ -1,60 +1,51 @@
 package ch.postfinance.swiss.hacks.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import io.quarkus.security.jpa.Password;
-import io.quarkus.security.jpa.Roles;
-import io.quarkus.security.jpa.UserDefinition;
-import io.quarkus.security.jpa.Username;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import org.iban4j.Iban;
 
+import java.math.BigDecimal;
 import java.security.SecureRandom;
-import java.time.Instant;
 
-import static io.quarkus.elytron.security.common.BcryptUtil.bcryptHash;
 import static java.lang.String.format;
+import static java.math.RoundingMode.HALF_UP;
 import static org.iban4j.CountryCode.CH;
 
 @Entity
-@UserDefinition
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"iban"})
+})
 public class Account extends PanacheEntity {
+
+    private static final int ROUNDING_SCALE = 2;
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
-    @Username
     @Column(length = 22)
     public String iban;
 
-    @Password
-    public String password;
+    public BigDecimal balance;
 
-    public String firstName;
-    public String lastName;
-    public Instant dateOfBirth;
-
-    @Roles
-    public String role;
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false, updatable = false)
+    public Login login;
 
     /**
      * Adds a new user account to the database. {@code iban} and {@code password} for authentication will be generated
      * randomly.
      *
-     * @param firstName   the first name of the new user
-     * @param lastName    the last name of the new user
-     * @param dateOfBirth birthday of the new user
-     * @param password    a random generated password used for authentication
      * @return the persisted account with all information
      */
-    public static Account addAccount(String firstName, String lastName, Instant dateOfBirth, String password) {
+    public static Account newAccount(Login login) {
         var account = new Account();
         account.iban = generateIban();
-        account.password = bcryptHash(password);
-        account.firstName = firstName;
-        account.lastName = lastName;
-        account.dateOfBirth = dateOfBirth;
-        account.role = "user";
-        account.persist();
+        account.balance = BigDecimal.ZERO;
+        account.login = login;
         return account;
     }
 
@@ -69,5 +60,14 @@ public class Account extends PanacheEntity {
 
     public static String generateAccountNumber() {
         return format("%012d", SECURE_RANDOM.nextLong(1_000_000_000_000L));
+    }
+
+    public BigDecimal balanceInCentimes() {
+        // Multiply by 20 to convert francs to units of 0.05 (centimes)
+        BigDecimal inCentimes = balance.multiply(new BigDecimal(20));
+        // Round the value in centimes using half-up rounding mode
+        BigDecimal roundedInCentimes = inCentimes.setScale(0, HALF_UP);
+        // Divide by 20 to convert back to francs with rounding
+        return roundedInCentimes.divide(new BigDecimal(20), ROUNDING_SCALE, HALF_UP);
     }
 }
