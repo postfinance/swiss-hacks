@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Swiss Hacks 2024</title>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Swiss Bank</h1>
+        <div id="container">
+            Loading...
+        </div>
+    </body>
+    <script>
+        function logout() {
+            // Delete the "quarkus-credential" cookie
+            document.cookie = "quarkus-credential=; Max-Age=0";
+            window.location.href = "/index.html";
+        }
+
+        fetch('/accounts/balance', {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById("container");
+            container.innerHTML = `
+                <table id="balance-table">
+                    <thead>
+                        <tr>
+                            <th>IBAN</th>
+                            <th>Balance (CHF)</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>`;
+
+            const tableBody = document.getElementById('balance-table').getElementsByTagName('tbody')[0];
+
+            for (const account of data) {
+                const tableRow = document.createElement('tr');
+                const ibanCell = document.createElement('td');
+                ibanCell.textContent = account.iban;
+                const balanceCell = document.createElement('td');
+                balanceCell.textContent = account.balance;
+
+                tableRow.appendChild(ibanCell);
+                tableRow.appendChild(balanceCell);
+                tableBody.appendChild(tableRow);
+            }
+
+            const logoutButton = document.createElement("button");
+            logoutButton.textContent = "Logout";
+            logoutButton.addEventListener("click", logout);
+
+            container.appendChild(document.createElement("br"))
+            container.appendChild(logoutButton)
+        })
+        .catch(_ => {
+            document.getElementById("container").innerHTML = `
+                <p>World's most simple banking application?</p>
+                <a href="/login.html"><button type="button">Login</button></a>
+                <p>Don't have an account yet? <a href="/registration.html">Register Here</a></p>`;
+        });
+    </script>
+</html>

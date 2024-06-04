@@ -4,7 +4,7 @@
     <title>Customer Registration</title>
 </head>
     <body>
-        <h1>Customer Registration</h1>
+        <h1 id="title">Customer Registration</h1>
         <form id="registrationForm">
             <label for="firstName">First Name:</label>
             <input type="text" id="firstName" name="firstName" required><br><br>
@@ -14,6 +14,7 @@
             <input type="date" id="dateOfBirth" name="dateOfBirth" required><br><br>
             <button type="submit">Register</button>
         </form>
+        <div id="responseContainer"></div>
     </body>
     <script>
         document.getElementById("registrationForm").addEventListener("submit", function (event) {
@@ -39,9 +40,35 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        // Handle successful registration (e.g., redirect to success page)
+                        response.json().then(jsonBody => {
+                            const title = document.getElementById("title");
+                            title.textContent = "Registration successful!";
+
+                            const username = document.createElement("p");
+                            username.textContent = "Your username is: " + jsonBody.username;
+
+                            const password = document.createElement("p");
+                            password.textContent = "Your password is: " + jsonBody.password
+
+                            const login = document.createElement("p");
+                            login.innerHTML = "Please copy and store your password securely. You won't be able to <a href=\"/login.html\">login</a> without it!"
+
+                            const container = document.getElementById("responseContainer");
+                            container.innerHTML = "";
+                            container.appendChild(username);
+                            container.appendChild(password);
+                            container.appendChild(login);
+
+                            document.getElementById("registrationForm").remove();
+                        });
                     } else {
-                        // Handle registration error (e.g., display error message)
+                        const error = document.createElement("p");
+                        error.textContent = "Registration failed: " + response.statusText + " (" + response.status + "). Please try again."
+                        error.style.color = "red";
+
+                        const container = document.getElementById("responseContainer");
+                        container.innerHTML = "";
+                        container.appendChild(error);
                     }
                 })
                 .catch(error => {
