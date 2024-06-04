@@ -223,17 +223,23 @@ components:
       properties:
         iban:
           type: string
+          example: CH1212345209244456858
         balance:
           type: string
           format: decimal
     FundTransfer:
       type: object
       required:
-        - recipientId
+        - fromIban
+        - toIban
         - amount
       properties:
-        recipientId:
+        fromIban:
           type: string
+          example: CH3412345218703571318
+        toIban:
+          type: string
+          example: CH5012345932566956301
         amount:
           type: number
           format: float
@@ -244,6 +250,11 @@ components:
           type: string
         status:
           type: string
+          enum:
+            - SUCCESS
+            - FAILED_INVALID_ACCOUNT_ACCESS
+            - FAILED_NOT_ENOUGH_FUNDS
+            - FAILED_RECIPIENT_NOT_FOUND
     BillPayment:
       type: object
       required:

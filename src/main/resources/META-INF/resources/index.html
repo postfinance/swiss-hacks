@@ -37,6 +37,7 @@
                         <tr>
                             <th>IBAN</th>
                             <th>Balance (CHF)</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -50,9 +51,13 @@
                 ibanCell.textContent = account.iban;
                 const balanceCell = document.createElement('td');
                 balanceCell.textContent = account.balance;
+                const actionCell = document.createElement('td');
+                actionCell.innerHTML = `
+                    <button type="button">Transfer Funds</button>`;
 
                 tableRow.appendChild(ibanCell);
                 tableRow.appendChild(balanceCell);
+                tableRow.appendChild(actionCell);
                 tableBody.appendChild(tableRow);
             }
 

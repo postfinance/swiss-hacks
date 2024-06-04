@@ -8,8 +8,8 @@ As a new customer, I want to register for an online banking account so that I ca
 - **When** I navigate to the bank's website
 - **And** click on "Register"
 - **Then** I should be prompted to fill out a registration form
-- **And** submit my personal details and account information
-- **And** receive confirmation of successful registration
+- **And** submit my first name, last name and date of birth
+- **And** receive confirmation of successful registration in form of a username and password
 
 ## User Story 2: Account Balance Check
 As a customer, I want to check my account balance online to monitor my finances.
@@ -25,7 +25,7 @@ As a customer, I want to transfer funds between my accounts or to another accoun
 ### Scenario:
 - **Given** I am logged into my online banking account
 - **When** I select "Transfer Funds"
-- **And** enter the recipient details and amount
+- **And** enter the recipient IBAN and amount
 - **Then** the funds should be transferred successfully
 - **And** I receive confirmation of the transaction
 

@@ -2,7 +2,7 @@
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework. It requires Java 21 or above.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+If you want to learn more about Quarkus, please visit its website: https://quarkus.io.
 
 If you're
 running [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/download/?section=windows),
@@ -20,7 +20,7 @@ using:
 ```
 
 > **_NOTE:_**  Quarkus ships with a Dev UI, which is available in dev mode only
-> at http://localhost:8080/q/dev/.
+> at http://localhost:8080/q/dev.
 
 ## Packaging and running the application
 
