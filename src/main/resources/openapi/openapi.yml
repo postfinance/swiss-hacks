@@ -89,8 +89,6 @@ paths:
     get:
       summary: View transaction history
       description: Get a list of recent transactions.
-      security:
-        - bearerAuth: []
       responses:
         '200':
           description: Transaction history
@@ -245,8 +243,9 @@ components:
       items:
         type: object
         required:
-          - transactionId
-          - date
+          - description
+          - fromIban
+          - toIban
           - amount
           - type
         properties:

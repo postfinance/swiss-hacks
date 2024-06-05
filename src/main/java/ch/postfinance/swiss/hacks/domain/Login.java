@@ -43,16 +43,6 @@ public class Login extends PanacheEntity {
     @OneToMany(mappedBy = "login", cascade = ALL, orphanRemoval = true)
     public Set<Account> accounts = new HashSet<>();
 
-    /**
-     * Adds a new user login to the database. {@code iban} and {@code password} for authentication will be generated
-     * randomly.
-     *
-     * @param firstName   the first name of the new user
-     * @param lastName    the last name of the new user
-     * @param dateOfBirth birthday of the new user
-     * @param password    a random generated password used for authentication
-     * @return the persisted account with all information
-     */
     public static Login newLogin(String firstName, String lastName, Instant dateOfBirth, String password) {
         var login = new Login();
         login.password = bcryptHash(password);

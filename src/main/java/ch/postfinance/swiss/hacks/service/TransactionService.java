@@ -5,9 +5,14 @@ import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.
 import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.FAILED_RECIPIENT_NOT_FOUND;
 
 import ch.postfinance.swiss.hacks.domain.Account;
+import ch.postfinance.swiss.hacks.domain.Transaction;
+import ch.postfinance.swiss.hacks.resource.TransactionsRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,6 +21,9 @@ public class TransactionService {
 
     @Inject
     AccountService accountService;
+
+    @Inject
+    TransactionsRepository transactionsRepository;
 
     public String transfer(String fromIban, String toIban, Double amount) throws IllegalTransactionException {
         var transactionId = UUID.randomUUID();
@@ -59,5 +67,13 @@ public class TransactionService {
 
     private static boolean accountHasEnoughFunds(Account account, Double amount) {
         return account.balance.compareTo(BigDecimal.valueOf(amount)) >= 0;
+    }
+
+    public List<Transaction> getAllTransactions() {
+        return transactionsRepository.findAll().list();
+    }
+
+    public Transaction getTransactionById(Long id) {
+        return transactionsRepository.findById(id);
     }
 }

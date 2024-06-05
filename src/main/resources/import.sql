@@ -1,0 +1,7 @@
+INSERT INTO Transaction (id, description, fromIban, toIban, amount)
+VALUES (1, 'Payment for invoice #1234', 'CH9300762011623852957', 'CH9300762011623852957', 250.75),
+       (2, 'Salary for May', 'CH5604835012345678009', 'CH9300762011623852957', 3500.00),
+       (3, 'Refund for order #5678', 'CH9300762011623852957', 'CH1204835012345678009', 45.00),
+       (4, 'Payment for subscription', 'CH9300762011623852957', 'CH5604835012345678009', 15.99),
+       (5, 'Transfer to savings', 'CH9300762011623852957', 'CH9300762011623852957', 1000.00),
+       (6, 'Gift to friend', 'CH1204835012345678009', 'CH5604835012345678009', 150.00);

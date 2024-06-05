@@ -36,12 +36,6 @@ public class Account extends PanacheEntity {
     @JoinColumn(nullable = false, updatable = false)
     public Login login;
 
-    /**
-     * Adds a new user account to the database. {@code iban} and {@code password} for authentication
-     * will be generated randomly.
-     *
-     * @return the persisted account with all information
-     */
     public static Account newAccount(Login login) {
         var account = new Account();
         account.iban = generateIban();
@@ -72,11 +66,8 @@ public class Account extends PanacheEntity {
     }
 
     public BigDecimal balanceInCentimes() {
-        // Multiply by 20 to convert francs to units of 0.05 (centimes)
         BigDecimal inCentimes = balance.multiply(new BigDecimal(20));
-        // Round the value in centimes using half-up rounding mode
         BigDecimal roundedInCentimes = inCentimes.setScale(0, HALF_UP);
-        // Divide by 20 to convert back to francs with rounding
         return roundedInCentimes.divide(new BigDecimal(20), ROUNDING_SCALE, HALF_UP);
     }
 }
