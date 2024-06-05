@@ -1,5 +1,10 @@
 package ch.postfinance.swiss.hacks.domain;
 
+import static ch.postfinance.swiss.hacks.GlobalConstants.BANK_CODE;
+import static java.lang.String.format;
+import static java.math.RoundingMode.HALF_UP;
+import static org.iban4j.CountryCode.CH;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,18 +12,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import org.iban4j.Iban;
-
 import java.math.BigDecimal;
 import java.security.SecureRandom;
-
-import static java.lang.String.format;
-import static java.math.RoundingMode.HALF_UP;
-import static org.iban4j.CountryCode.CH;
+import java.util.concurrent.ThreadLocalRandom;
+import org.iban4j.Iban;
 
 @Entity
 @Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"iban"})
+    @UniqueConstraint(columnNames = {"iban"})
 })
 public class Account extends PanacheEntity {
 
@@ -36,30 +37,38 @@ public class Account extends PanacheEntity {
     public Login login;
 
     /**
-     * Adds a new user account to the database. {@code iban} and {@code password} for authentication will be generated
-     * randomly.
+     * Adds a new user account to the database. {@code iban} and {@code password} for authentication
+     * will be generated randomly.
      *
      * @return the persisted account with all information
      */
     public static Account newAccount(Login login) {
         var account = new Account();
         account.iban = generateIban();
-        account.balance = BigDecimal.ZERO;
+        account.balance = generateRandomBigDecimalInRange(BigDecimal.valueOf(1_000),
+            BigDecimal.valueOf(10_000));
         account.login = login;
         return account;
     }
 
     private static String generateIban() {
         return new Iban.Builder()
-                .countryCode(CH)
-                .bankCode("12345")
-                .accountNumber(generateAccountNumber())
-                .build()
-                .toString();
+            .countryCode(CH)
+            .bankCode(BANK_CODE)
+            .accountNumber(generateAccountNumber())
+            .build()
+            .toString();
     }
 
-    public static String generateAccountNumber() {
+    private static String generateAccountNumber() {
         return format("%012d", SECURE_RANDOM.nextLong(1_000_000_000_000L));
+    }
+
+    private static BigDecimal generateRandomBigDecimalInRange(BigDecimal min, BigDecimal max) {
+        BigDecimal randomBigDecimal = min.add(
+            BigDecimal.valueOf(ThreadLocalRandom.current().nextDouble())
+                .multiply(max.subtract(min)));
+        return randomBigDecimal.setScale(2, HALF_UP);
     }
 
     public BigDecimal balanceInCentimes() {
