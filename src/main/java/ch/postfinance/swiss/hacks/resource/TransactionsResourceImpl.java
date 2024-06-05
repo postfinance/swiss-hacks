@@ -9,6 +9,7 @@ import ch.postfinance.swiss.hacks.service.TransactionService;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +33,13 @@ public class TransactionsResourceImpl implements TransactionsResource {
             transferResponse.setTransactionId(transactionId);
             transferResponse.setStatus(SUCCESS);
         } catch (IllegalTransactionException e) {
-            log.warn("Transaction failed!", e);
+            log.warn("Submitting transaction failed!", e);
 
             transferResponse.setTransactionId(e.getTransactionId().toString());
             transferResponse.setStatus(e.getStatus());
+
+            throw new BadRequestException(
+                "Submitting transaction failed! Status: " + e.getStatus().toString(), e);
         }
 
         return transferResponse;

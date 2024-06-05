@@ -53,7 +53,9 @@
                 balanceCell.textContent = account.balance;
                 const actionCell = document.createElement('td');
                 actionCell.innerHTML = `
-                    <button type="button">Transfer Funds</button>`;
+                    <a href="/transaction.html?fromIban=${account.iban}">
+                        <button type="button">Transfer Funds</button>
+                    </a>`;
 
                 tableRow.appendChild(ibanCell);
                 tableRow.appendChild(balanceCell);

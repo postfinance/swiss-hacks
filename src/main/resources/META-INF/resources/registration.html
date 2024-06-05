@@ -25,9 +25,9 @@
             const dateOfBirth = document.getElementById("dateOfBirth").value;
 
             const data = {
-                firstName: firstName,
-                lastName: lastName,
-                dateOfBirth: dateOfBirth
+                firstName,
+                lastName,
+                dateOfBirth
             };
 
             fetch("/customers/register", {
@@ -63,7 +63,7 @@
                         });
                     } else {
                         const error = document.createElement("p");
-                        error.textContent = "Registration failed: " + response.statusText + " (" + response.status + "). Please try again."
+                        error.textContent = "Registration failed: " + response.statusText + " (" + response.status + "). Please check your input and try again."
                         error.style.color = "red";
 
                         const container = document.getElementById("responseContainer");
@@ -71,9 +71,6 @@
                         container.appendChild(error);
                     }
                 })
-                .catch(error => {
-                    console.error("Error submitting registration:", error);
-                });
         });
     </script>
 </html>
