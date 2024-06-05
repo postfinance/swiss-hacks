@@ -100,32 +100,6 @@ paths:
                 $ref: '#/components/schemas/TransactionHistory'
         '401':
           description: Unauthorized
-  /accounts/statements:
-    get:
-      summary: Download account statement
-      description: Download an account statement for a specified period.
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: period
-          in: query
-          required: true
-          schema:
-            type: string
-            example: '2022-01'
-          description: Statement period in YYYY-MM format
-      responses:
-        '200':
-          description: PDF account statement
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: Invalid period format
-        '401':
-          description: Unauthorized
   /customers/password:
     put:
       summary: Change password

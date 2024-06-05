@@ -6,7 +6,6 @@ import ch.postfinance.swiss.hacks.service.AccountService;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Authenticated
@@ -30,10 +29,5 @@ public class AccountsResourceImpl implements AccountsResource {
                 .map(AccountsResourceImpl::getAccountBalance)
                 .toList())
             .orElseThrow();
-    }
-
-    @Override
-    public Response downloadAccountStatement(String period) {
-        return null;
     }
 }

@@ -47,16 +47,7 @@ As a customer, I want to view my transaction history online for tracking purpose
 - **When** I click on "Transaction History"
 - **Then** I should see a list of recent transactions
 
-## User Story 6: Account Statement Download
-As a customer, I want to download my account statement in PDF format for record-keeping.
-
-### Scenario:
-- **Given** I am logged into my online banking account
-- **When** I navigate to "Account Statements"
-- **And** select the desired statement period
-- **Then** I should be able to download the statement in PDF format
-
-## User Story 7: Change Password
+## User Story 6: Change Password
 As a customer, I want to change my online banking password for security reasons.
 
 ### Scenario:
@@ -65,7 +56,7 @@ As a customer, I want to change my online banking password for security reasons.
 - **And** enter my current and new password
 - **Then** my password should be updated successfully
 
-## User Story 8: Card Management
+## User Story 7: Card Management
 As a customer, I want to manage my debit/credit cards online, such as activating, blocking, or requesting replacements.
 
 ### Scenario:
@@ -74,7 +65,7 @@ As a customer, I want to manage my debit/credit cards online, such as activating
 - **And** choose the desired card action (e.g., activate, block, replace)
 - **Then** the card status should be updated accordingly
 
-## User Story 9: Account Settings Update
+## User Story 8: Account Settings Update
 As a customer, I want to update my personal details and account preferences online.
 
 ### Scenario:
@@ -83,7 +74,7 @@ As a customer, I want to update my personal details and account preferences onli
 - **And** update my contact information or notification preferences
 - **Then** my settings should be saved successfully
 
-## User Story 10: Customer Support
+## User Story 9: Customer Support
 As a customer, I want to contact customer support online for assistance with banking services.
 
 ### Scenario:
