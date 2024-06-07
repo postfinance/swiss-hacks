@@ -46,7 +46,7 @@ jobs:
             -Dquarkus.native.container-build=true -Dquarkus.native.additional-build-args=--initialize-at-run-time=org.hibernate.type.format.jakartajson.JakartaJsonIntegration\\,ch.postfinance.swiss.hacks.domain.Account\\,ch.postfinance.swiss.hacks.service.LoginService
       - name: Build and push Docker image
         id: push
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25
         with:
           context: .
           file: ./src/main/docker/Dockerfile.distroless
