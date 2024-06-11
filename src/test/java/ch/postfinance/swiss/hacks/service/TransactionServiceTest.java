@@ -48,7 +48,9 @@ class TransactionServiceTest {
 
         var transactionAmount = 200.00;
 
-        var transactionId = fixture.transfer(fromAccount.iban, toAccount.iban, transactionAmount);
+        var description = "Lorem ipsum";
+
+        var transactionId = fixture.transfer(fromAccount.iban, toAccount.iban, transactionAmount, description);
         assertThat(transactionId).isNotEmpty();
 
         assertThat(fromAccount.balance).isEqualTo(fromBalance.subtract(BigDecimal.valueOf(transactionAmount)));

@@ -7,7 +7,6 @@ import ch.postfinance.swiss.hacks.resource.beans.FundTransfer;
 import ch.postfinance.swiss.hacks.resource.beans.TransferResponse;
 import ch.postfinance.swiss.hacks.service.IllegalTransactionException;
 import ch.postfinance.swiss.hacks.service.TransactionService;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -16,13 +15,12 @@ import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.security.spec.ECField;
 import java.util.List;
 
 @Authenticated
-public class TransactionsResourceImpl implements TransactionsResource {
+public class TransactionResourceImpl implements TransactionsResource {
 
-    private static final Logger log = LoggerFactory.getLogger(TransactionsResourceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(TransactionResourceImpl.class);
 
     @Inject
     TransactionService transactionService;
@@ -33,7 +31,7 @@ public class TransactionsResourceImpl implements TransactionsResource {
         var transferResponse = new TransferResponse();
 
         try {
-            var transactionId = transactionService.transfer(fundTransfer.getFromIban(), fundTransfer.getToIban(), fundTransfer.getAmount());
+            var transactionId = transactionService.transfer(fundTransfer.getFromIban(), fundTransfer.getToIban(), fundTransfer.getAmount(), fundTransfer.getDescription());
 
             transferResponse.setTransactionId(transactionId);
             transferResponse.setStatus(SUCCESS);

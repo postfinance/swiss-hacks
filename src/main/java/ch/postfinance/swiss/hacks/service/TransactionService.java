@@ -6,10 +6,10 @@ import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.
 
 import ch.postfinance.swiss.hacks.domain.Account;
 import ch.postfinance.swiss.hacks.domain.Transaction;
-import ch.postfinance.swiss.hacks.resource.TransactionsRepository;
+import ch.postfinance.swiss.hacks.resource.TransactionRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,12 +20,13 @@ import java.util.UUID;
 public class TransactionService {
 
     @Inject
-    AccountService accountService;
+    private TransactionRepository transactionRepository;
 
     @Inject
-    TransactionsRepository transactionsRepository;
+    AccountService accountService;
 
-    public String transfer(String fromIban, String toIban, Double amount) throws IllegalTransactionException {
+    @Transactional
+    public String transfer(String fromIban, String toIban, Double amount, String description) throws IllegalTransactionException {
         var transactionId = UUID.randomUUID();
 
         if (!isAccountOfCurrentUser(fromIban)) {
@@ -51,6 +52,15 @@ public class TransactionService {
         fromAccount.persist();
         toAccount.persist();
 
+        Transaction transaction = new Transaction();
+        transaction.transactionId = transactionId;
+        transaction.amount = BigDecimal.valueOf(amount);
+        transaction.description = description;
+        transaction.fromIban = fromIban;
+        transaction.toIban = toIban;
+
+        transactionRepository.persist(transaction);
+
         return transactionId.toString();
     }
 
@@ -70,10 +80,10 @@ public class TransactionService {
     }
 
     public List<Transaction> getAllTransactions() {
-        return transactionsRepository.findAll().list();
+        return transactionRepository.findAll().list();
     }
 
     public Transaction getTransactionById(Long id) {
-        return transactionsRepository.findById(id);
+        return transactionRepository.findById(id);
     }
 }

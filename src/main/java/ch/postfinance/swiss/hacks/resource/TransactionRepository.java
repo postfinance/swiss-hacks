@@ -5,5 +5,5 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class TransactionsRepository implements PanacheRepositoryBase<Transaction, Long> {
+public class TransactionRepository implements PanacheRepositoryBase<Transaction, Long> {
 }

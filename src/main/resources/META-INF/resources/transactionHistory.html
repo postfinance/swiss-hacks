@@ -17,9 +17,10 @@
         th {
             background-color: #f4f4f4;
         }
-        #logout {
+        #logout, #home {
             margin-top: 20px;
             cursor: pointer;
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -40,6 +41,7 @@
     </tbody>
 </table>
 
+<button id="home">Home</button>
 <button id="logout">Logout</button>
 
 <script>
@@ -48,7 +50,12 @@
         window.location.href = '/login.html';
     }
 
+    function goHome() {
+        window.location.href = '/index.html';
+    }
+
     document.getElementById('logout').addEventListener('click', logout);
+    document.getElementById('home').addEventListener('click', goHome);
 
     fetch('/transactions/history', {
         method: 'GET',
