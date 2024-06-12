@@ -2,16 +2,79 @@
 <html lang="en">
 <head>
     <title>Login</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        async function fetchSupportContacts() {
+            try {
+                let response = await fetch('/support/contact');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                let data = await response.json();
+                displaySupportContacts(data);
+            } catch (error) {
+                console.error('Fetch error: ', error);
+            }
+        }
+
+        function displaySupportContacts(data) {
+            let tableBody = document.getElementById('support-contacts-body');
+            tableBody.innerHTML = '';
+            data.forEach(contact => {
+                let row = document.createElement('tr');
+                let emailCell = document.createElement('td');
+                emailCell.textContent = contact.email;
+                let phoneCell = document.createElement('td');
+                phoneCell.textContent = contact.phone;
+                row.appendChild(emailCell);
+                row.appendChild(phoneCell);
+                tableBody.appendChild(row);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            fetchSupportContacts();
+        });
+    </script>
 </head>
-    <body>
-        <h1>Login</h1>
-        <form action="/j_security_check" method="POST">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="j_username" required><br><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="j_password" required><br><br>
-            <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account yet? <a href="/registration.html">Register Here</a></p>
-    </body>
+<body>
+<h1>Login</h1>
+<form action="/j_security_check" method="POST">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="j_username" required><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="j_password" required><br><br>
+    <button type="submit">Login</button>
+</form>
+<p>Don't have an account yet? <a href="/registration.html">Register Here</a></p>
+
+<h2>Contact Customer Support</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>Phone</th>
+    </tr>
+    </thead>
+    <tbody id="support-contacts-body">
+    <!-- Support contacts will be populated here -->
+    </tbody>
+</table>
+</body>
 </html>

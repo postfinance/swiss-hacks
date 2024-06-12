@@ -34,10 +34,11 @@ As a customer, I want to pay bills online using my bank account.
 
 ### Scenario:
 - **Given** I am logged into my online banking account
-- **When** I choose "Pay Bills"
+- **When** I choose "Transfer Funds"
 - **And** enter the payee details and amount
 - **Then** the bill should be paid successfully
 - **And** I receive a confirmation of the payment
+- **And** The payment is available at the transaction history
 
 ## User Story 5: Transaction History
 As a customer, I want to view my transaction history online for tracking purposes.
@@ -75,10 +76,9 @@ As a customer, I want to update my personal details and account preferences onli
 - **Then** my settings should be saved successfully
 
 ## User Story 9: Customer Support
-As a customer, I want to contact customer support online for assistance with banking services.
+As a customer, I want to contact customer support for assistance with banking services.
 
 ### Scenario:
 - **Given** I am logged into my online banking account
 - **When** I click on "Contact Us" or "Support"
-- **Then** I should have options to reach out via chat, email, or phone
-- **And** receive timely assistance from customer support
+- **Then** I need to obtain the contact information for support.
