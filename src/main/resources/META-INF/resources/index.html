@@ -78,6 +78,7 @@
             container.appendChild(document.createElement("br"))
             container.appendChild(logoutButton)
             container.appendChild(document.createElement("br"))
+            container.appendChild(document.createElement("br"))
         }
 
         function addSupportButton() {
@@ -97,15 +98,13 @@
             })
                 .then(response => response.json())
                 .then(data => displayAccountInformation(data))
-                .then(_ => addSupportButton())
                 .catch(_ => {
                     container.innerHTML = `
                         <p>World's most simple banking application?</p>
                         <a href="/login.html"><button type="button">Login</button></a>
                         <p>Don't have an account yet? <a href="/registration.html">Register Here</a></p>`;
-
-                    addSupportButton()
-                });
+                })
+                .finally(() => addSupportButton());
         }
 
         fetchBalance();

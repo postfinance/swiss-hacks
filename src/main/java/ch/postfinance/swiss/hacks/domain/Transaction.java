@@ -3,6 +3,7 @@ package ch.postfinance.swiss.hacks.domain;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
@@ -15,7 +16,8 @@ public class Transaction extends PanacheEntity {
     @Column(length = 10)
     public UUID transactionId;
 
-    @Column(length = 255)
+    @Lob
+    @Column
     public String description;
 
     @Column(length = 22)
