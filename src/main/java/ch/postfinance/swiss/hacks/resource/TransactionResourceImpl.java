@@ -11,16 +11,16 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.SUCCESS;
+import static org.slf4j.LoggerFactory.getLogger;
 
 @Authenticated
 public class TransactionResourceImpl implements TransactionsResource {
 
-    private static final Logger log = LoggerFactory.getLogger(TransactionResourceImpl.class);
+    private static final Logger log = getLogger(TransactionResourceImpl.class);
 
     @Inject
     TransactionService transactionService;
@@ -51,9 +51,7 @@ public class TransactionResourceImpl implements TransactionsResource {
     @Override
     @RolesAllowed("user")
     public Response viewTransactionHistory() {
-        log.info("Fetching transaction history");
         List<Transaction> transactions = transactionService.getAllTransactions();
-        log.info("Fetched {} transactions", transactions.size());
         return Response.ok(transactions).build();
     }
 }

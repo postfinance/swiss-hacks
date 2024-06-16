@@ -14,10 +14,10 @@ public class SupportResourceImpl implements SupportResource {
     SupportService supportService;
 
     public static SupportContact convertToDTO(SupportContactInformation entity) {
-        SupportContact dto = new SupportContact();
-        dto.setEmail(entity.email);
-        dto.setPhone(entity.phone);
-        return dto;
+        var supportContact = new SupportContact();
+        supportContact.setEmail(entity.email);
+        supportContact.setPhone(entity.phone);
+        return supportContact;
     }
 
     @Override

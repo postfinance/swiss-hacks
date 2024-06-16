@@ -98,25 +98,6 @@ paths:
           description: Invalid input
         '401':
           description: Unauthorized
-  /cards/manage:
-    patch:
-      summary: Manage cards
-      description: Activate, block, or replace cards.
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CardManagement'
-      responses:
-        '200':
-          description: Card status updated
-        '400':
-          description: Invalid request
-        '401':
-          description: Unauthorized
   /support/contact:
     get:
       summary: Contact customer support
@@ -242,20 +223,6 @@ components:
         newPassword:
           type: string
           format: password
-    CardManagement:
-      type: object
-      required:
-        - cardId
-        - action
-      properties:
-        cardId:
-          type: string
-        action:
-          type: string
-          enum:
-            - activate
-            - block
-            - replace
     AccountSettingsUpdate:
       type: object
       properties:
@@ -266,7 +233,11 @@ components:
     SupportContact:
       type: array
       items:
+        type: object
         required:
+          - email
+          - phone
+        properties:
           email:
             type: string
           phone:
