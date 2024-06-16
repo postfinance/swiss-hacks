@@ -1,9 +1,5 @@
 package ch.postfinance.swiss.hacks.service;
 
-import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.FAILED_INVALID_ACCOUNT_ACCESS;
-import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.FAILED_NOT_ENOUGH_FUNDS;
-import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.FAILED_RECIPIENT_NOT_FOUND;
-
 import ch.postfinance.swiss.hacks.domain.Account;
 import ch.postfinance.swiss.hacks.domain.Transaction;
 import ch.postfinance.swiss.hacks.resource.TransactionRepository;
@@ -16,14 +12,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.FAILED_INVALID_ACCOUNT_ACCESS;
+import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.FAILED_NOT_ENOUGH_FUNDS;
+import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.FAILED_RECIPIENT_NOT_FOUND;
+
 @ApplicationScoped
 public class TransactionService {
 
     @Inject
+    AccountService accountService;
+    @Inject
     private TransactionRepository transactionRepository;
 
-    @Inject
-    AccountService accountService;
+    private static Optional<Account> getAccountForIban(String iban) {
+        return Account.find("iban", iban).singleResultOptional();
+    }
+
+    private static boolean accountHasEnoughFunds(Account account, Double amount) {
+        return account.balance.compareTo(BigDecimal.valueOf(amount)) >= 0;
+    }
 
     @Transactional
     public String transfer(String fromIban, String toIban, Double amount, String description) throws IllegalTransactionException {
@@ -64,19 +71,11 @@ public class TransactionService {
         return transactionId.toString();
     }
 
-    private static Optional<Account> getAccountForIban(String iban) {
-        return Account.find("iban", iban).singleResultOptional();
-    }
-
     private boolean isAccountOfCurrentUser(String fromIban) {
         return accountService.currentUserAccounts()
-            .orElseThrow()
-            .stream()
-            .anyMatch(account -> fromIban.equals(account.iban));
-    }
-
-    private static boolean accountHasEnoughFunds(Account account, Double amount) {
-        return account.balance.compareTo(BigDecimal.valueOf(amount)) >= 0;
+                .orElseThrow()
+                .stream()
+                .anyMatch(account -> fromIban.equals(account.iban));
     }
 
     public List<Transaction> getAllTransactions() {

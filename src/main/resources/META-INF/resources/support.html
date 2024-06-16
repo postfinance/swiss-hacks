@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Support</title>
+        <style>
+            table {
+                width: 50%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+
+            table, th, td {
+                border: 1px solid black;
+            }
+
+            th, td {
+                padding: 8px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Customer Support</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody id="support-contacts-body">
+            <!-- Support contacts will be populated here -->
+            </tbody>
+        </table>
+
+        <a href="/">
+            <button type="button">
+                Home
+            </button>
+        </a>
+    </body>
+    <script>
+        function displaySupportContacts(data) {
+            let tableBody = document.getElementById('support-contacts-body');
+            tableBody.innerHTML = '';
+            data.forEach(contact => {
+                let row = document.createElement('tr');
+                let emailCell = document.createElement('td');
+                emailCell.textContent = contact.email;
+                let phoneCell = document.createElement('td');
+                phoneCell.textContent = contact.phone;
+                row.appendChild(emailCell);
+                row.appendChild(phoneCell);
+                tableBody.appendChild(row);
+            });
+        }
+
+        function fetchSupportContacts() {
+            fetch('/support/contact')
+                .then(response => response.json())
+                .then(data => displaySupportContacts(data));
+        }
+
+        fetchSupportContacts();
+    </script>
+</html>

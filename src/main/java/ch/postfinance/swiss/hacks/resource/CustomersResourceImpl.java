@@ -17,6 +17,10 @@ public class CustomersResourceImpl implements CustomersResource {
     @Inject
     LoginService loginService;
 
+    public static Instant parseDateToInstant(String dateString) {
+        return LocalDate.parse(dateString, ISO_LOCAL_DATE).atStartOfDay().toInstant(ZoneOffset.UTC);
+    }
+
     @Override
     public RegistrationResponse registerANewCustomer(CustomerRegistration data) {
         var registrationInformation = loginService.register(data.getFirstName(), data.getLastName(), parseDateToInstant(data.getDateOfBirth()));
@@ -30,9 +34,5 @@ public class CustomersResourceImpl implements CustomersResource {
     @Override
     public void changePassword(PasswordChange data) {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public static Instant parseDateToInstant(String dateString) {
-        return LocalDate.parse(dateString, ISO_LOCAL_DATE).atStartOfDay().toInstant(ZoneOffset.UTC);
     }
 }

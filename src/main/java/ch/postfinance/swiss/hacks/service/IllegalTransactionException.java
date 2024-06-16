@@ -1,6 +1,7 @@
 package ch.postfinance.swiss.hacks.service;
 
 import ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status;
+
 import java.util.UUID;
 
 public class IllegalTransactionException extends Throwable {

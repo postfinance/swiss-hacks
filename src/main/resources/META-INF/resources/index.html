@@ -4,11 +4,22 @@
         <title>Swiss Hacks 2024</title>
         <style>
             table {
+                width: 50%;
                 border-collapse: collapse;
+                margin: 20px 0;
             }
-            th, td {
+
+            table, th, td {
                 border: 1px solid black;
-                padding: 5px;
+            }
+
+            th, td {
+                padding: 8px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #f2f2f2;
             }
         </style>
     </head>
@@ -19,29 +30,26 @@
         </div>
     </body>
     <script>
+        const container = document.getElementById("container");
+
         function logout() {
             // Delete the "quarkus-credential" cookie
             document.cookie = "quarkus-credential=; Max-Age=0";
             window.location.href = "/index.html";
         }
 
-        fetch('/accounts/balance', {
-            method: 'GET',
-        })
-        .then(response => response.json())
-        .then(data => {
-            const container = document.getElementById("container");
+        function displayAccountInformation(data) {
             container.innerHTML = `
-                <table id="balance-table">
-                    <thead>
-                        <tr>
-                            <th>IBAN</th>
-                            <th>Balance (CHF)</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>`;
+                        <table id="balance-table">
+                            <thead>
+                                <tr>
+                                    <th>IBAN</th>
+                                    <th>Balance (CHF)</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>`;
 
             const tableBody = document.getElementById('balance-table').getElementsByTagName('tbody')[0];
 
@@ -53,9 +61,9 @@
                 balanceCell.textContent = account.balance;
                 const actionCell = document.createElement('td');
                 actionCell.innerHTML = `
-                    <a href="/transaction.html?fromIban=${account.iban}">
-                        <button type="button">Transfer Funds</button>
-                    </a>`;
+                            <a href="/transaction.html?fromIban=${account.iban}">
+                                <button type="button">Transfer Funds</button>
+                            </a>`;
 
                 tableRow.appendChild(ibanCell);
                 tableRow.appendChild(balanceCell);
@@ -69,12 +77,37 @@
 
             container.appendChild(document.createElement("br"))
             container.appendChild(logoutButton)
-        })
-        .catch(_ => {
-            document.getElementById("container").innerHTML = `
-                <p>World's most simple banking application?</p>
-                <a href="/login.html"><button type="button">Login</button></a>
-                <p>Don't have an account yet? <a href="/registration.html">Register Here</a></p>`;
-        });
+            container.appendChild(document.createElement("br"))
+        }
+
+        function addSupportButton() {
+            const supportButton = document.createElement("a");
+            supportButton.href = "/support.html";
+            supportButton.innerHTML = `
+                <button type="button">
+                    Support
+                </button>`
+
+            container.appendChild(supportButton)
+        }
+
+        function fetchBalance() {
+            fetch('/accounts/balance', {
+                method: 'GET',
+            })
+                .then(response => response.json())
+                .then(data => displayAccountInformation(data))
+                .then(_ => addSupportButton())
+                .catch(_ => {
+                    container.innerHTML = `
+                        <p>World's most simple banking application?</p>
+                        <a href="/login.html"><button type="button">Login</button></a>
+                        <p>Don't have an account yet? <a href="/registration.html">Register Here</a></p>`;
+
+                    addSupportButton()
+                });
+        }
+
+        fetchBalance();
     </script>
 </html>

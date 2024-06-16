@@ -1,7 +1,5 @@
 package ch.postfinance.swiss.hacks.resource;
 
-import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.SUCCESS;
-
 import ch.postfinance.swiss.hacks.domain.Transaction;
 import ch.postfinance.swiss.hacks.resource.beans.FundTransfer;
 import ch.postfinance.swiss.hacks.resource.beans.TransferResponse;
@@ -16,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.SUCCESS;
 
 @Authenticated
 public class TransactionResourceImpl implements TransactionsResource {
@@ -42,7 +42,7 @@ public class TransactionResourceImpl implements TransactionsResource {
             transferResponse.setStatus(e.getStatus());
 
             throw new BadRequestException(
-                "Submitting transaction failed! Status: " + e.getStatus().toString(), e);
+                    "Submitting transaction failed! Status: " + e.getStatus().toString(), e);
         }
 
         return transferResponse;

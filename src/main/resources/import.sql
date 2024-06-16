@@ -6,7 +6,7 @@ VALUES (29837, 'Payment for invoice #1234', 'CH9300762011623852957', 'CH93007620
        (2343, 'Transfer to savings', 'CH9300762011623852957', 'CH9300762011623852957', 1000.00),
        (15661697, 'Gift to friend', 'CH1204835012345678009', 'CH5604835012345678009', 150.00);
 
-INSERT INTO SupportContactInfo (id, email, phone)
+INSERT INTO SupportContactInformation (id, email, phone)
 VALUES (1, 'user1@example.com', '555-0101'),
        (2, 'user2@example.com', '555-0102'),
        (3, 'user3@example.com', '555-0103'),

@@ -18,7 +18,7 @@ public class LoginService {
     public RegistrationInformation register(String firstName, String lastName, Instant dateOfBirth) {
         // TODO: Some verification/validity checks, probably
 
-        var password = String.valueOf(SECURE_RANDOM.nextInt(100_000,100_000_000));
+        var password = String.valueOf(SECURE_RANDOM.nextInt(100_000, 100_000_000));
         var login = newLogin(firstName, lastName, dateOfBirth, password);
 
         return new RegistrationInformation(login, password);

@@ -6,6 +6,7 @@ import ch.postfinance.swiss.hacks.service.AccountService;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+
 import java.util.List;
 
 @Authenticated
@@ -25,9 +26,9 @@ public class AccountsResourceImpl implements AccountsResource {
     @RolesAllowed("user")
     public List<AccountBalance> checkAccountBalance() {
         return accountService.currentUserAccounts()
-            .map(accounts -> accounts.stream()
-                .map(AccountsResourceImpl::getAccountBalance)
-                .toList())
-            .orElseThrow();
+                .map(accounts -> accounts.stream()
+                        .map(AccountsResourceImpl::getAccountBalance)
+                        .toList())
+                .orElseThrow();
     }
 }

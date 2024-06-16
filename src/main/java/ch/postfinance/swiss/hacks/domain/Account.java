@@ -1,10 +1,5 @@
 package ch.postfinance.swiss.hacks.domain;
 
-import static ch.postfinance.swiss.hacks.GlobalConstants.BANK_CODE;
-import static java.lang.String.format;
-import static java.math.RoundingMode.HALF_UP;
-import static org.iban4j.CountryCode.CH;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,14 +7,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import org.iban4j.Iban;
+
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.concurrent.ThreadLocalRandom;
-import org.iban4j.Iban;
+
+import static ch.postfinance.swiss.hacks.GlobalConstants.BANK_CODE;
+import static java.lang.String.format;
+import static java.math.RoundingMode.HALF_UP;
+import static org.iban4j.CountryCode.CH;
 
 @Entity
 @Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"iban"})
+        @UniqueConstraint(columnNames = {"iban"})
 })
 public class Account extends PanacheEntity {
 
@@ -40,18 +41,18 @@ public class Account extends PanacheEntity {
         var account = new Account();
         account.iban = generateIban();
         account.balance = generateRandomBigDecimalInRange(BigDecimal.valueOf(1_000),
-            BigDecimal.valueOf(10_000));
+                BigDecimal.valueOf(10_000));
         account.login = login;
         return account;
     }
 
     private static String generateIban() {
         return new Iban.Builder()
-            .countryCode(CH)
-            .bankCode(BANK_CODE)
-            .accountNumber(generateAccountNumber())
-            .build()
-            .toString();
+                .countryCode(CH)
+                .bankCode(BANK_CODE)
+                .accountNumber(generateAccountNumber())
+                .build()
+                .toString();
     }
 
     private static String generateAccountNumber() {
@@ -60,8 +61,8 @@ public class Account extends PanacheEntity {
 
     private static BigDecimal generateRandomBigDecimalInRange(BigDecimal min, BigDecimal max) {
         BigDecimal randomBigDecimal = min.add(
-            BigDecimal.valueOf(ThreadLocalRandom.current().nextDouble())
-                .multiply(max.subtract(min)));
+                BigDecimal.valueOf(ThreadLocalRandom.current().nextDouble())
+                        .multiply(max.subtract(min)));
         return randomBigDecimal.setScale(2, HALF_UP);
     }
 
