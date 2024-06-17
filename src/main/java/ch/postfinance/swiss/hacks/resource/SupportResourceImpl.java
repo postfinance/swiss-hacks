@@ -1,10 +1,9 @@
 package ch.postfinance.swiss.hacks.resource;
 
 import ch.postfinance.swiss.hacks.domain.SupportContactInformation;
-import ch.postfinance.swiss.hacks.resource.beans.SupportContact;
+import ch.postfinance.swiss.hacks.resource.beans.ContactInformation;
 import ch.postfinance.swiss.hacks.service.SupportService;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -13,18 +12,17 @@ public class SupportResourceImpl implements SupportResource {
     @Inject
     SupportService supportService;
 
-    public static SupportContact convertToDTO(SupportContactInformation entity) {
-        var supportContact = new SupportContact();
+    private static ContactInformation convertToDTO(SupportContactInformation entity) {
+        var supportContact = new ContactInformation();
         supportContact.setEmail(entity.email);
         supportContact.setPhone(entity.phone);
         return supportContact;
     }
 
     @Override
-    public Response contactCustomerSupport() {
-        List<SupportContact> supportData = supportService.getSupportInformation().stream()
+    public List<ContactInformation> contactCustomerSupport() {
+        return supportService.getSupportInformation().stream()
                 .map(SupportResourceImpl::convertToDTO)
                 .toList();
-        return Response.ok(supportData).build();
     }
 }

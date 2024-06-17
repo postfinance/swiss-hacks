@@ -2,6 +2,7 @@ package ch.postfinance.swiss.hacks.resource;
 
 import ch.postfinance.swiss.hacks.domain.Transaction;
 import ch.postfinance.swiss.hacks.resource.beans.FundTransfer;
+import ch.postfinance.swiss.hacks.resource.beans.TransactionHistory;
 import ch.postfinance.swiss.hacks.resource.beans.TransferResponse;
 import ch.postfinance.swiss.hacks.service.IllegalTransactionException;
 import ch.postfinance.swiss.hacks.service.TransactionService;
@@ -9,7 +10,6 @@ import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
-import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -24,6 +24,16 @@ public class TransactionResourceImpl implements TransactionsResource {
 
     @Inject
     TransactionService transactionService;
+
+    private static TransactionHistory convertToDTO(Transaction transaction) {
+        var transactionHistory = new TransactionHistory();
+        transactionHistory.setTransactionId(transaction.transactionId.toString());
+        transactionHistory.setFromIban(transaction.fromIban);
+        transactionHistory.setToIban(transaction.toIban);
+        transactionHistory.setAmount(transaction.amount.doubleValue());
+        transactionHistory.setDescription(transactionHistory.getDescription());
+        return transactionHistory;
+    }
 
     @Override
     @RolesAllowed("user")
@@ -50,8 +60,9 @@ public class TransactionResourceImpl implements TransactionsResource {
 
     @Override
     @RolesAllowed("user")
-    public Response viewTransactionHistory() {
-        List<Transaction> transactions = transactionService.getAllTransactions();
-        return Response.ok(transactions).build();
+    public List<TransactionHistory> viewTransactionHistory() {
+        return transactionService.getAllTransactions().stream()
+                .map(TransactionResourceImpl::convertToDTO)
+                .toList();
     }
 }

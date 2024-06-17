@@ -76,7 +76,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionHistory'
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionHistory'
         '401':
           description: Unauthorized
   /customers/password:
@@ -108,7 +110,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SupportContact'
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContactInformation'
 components:
   securitySchemes:
     bearerAuth:
@@ -191,26 +195,26 @@ components:
             - FAILED_NOT_ENOUGH_FUNDS
             - FAILED_RECIPIENT_NOT_FOUND
     TransactionHistory:
-      type: array
-      items:
-        type: object
-        required:
-          - description
-          - fromIban
-          - toIban
-          - amount
-          - type
-        properties:
-          transactionId:
-            type: string
-          date:
-            type: string
-            format: date
-          amount:
-            type: number
-            format: float
-          type:
-            type: string
+      type: object
+      required:
+        - transactionId
+        - fromIban
+        - toIban
+        - amount
+      properties:
+        transactionId:
+          type: string
+        fromIban:
+          type: string
+          example: CH2089144756348165443
+        toIban:
+          type: string
+          example: CH7289144736549999683
+        amount:
+          type: number
+          format: float
+        description:
+          type: string
     PasswordChange:
       type: object
       required:
@@ -230,15 +234,13 @@ components:
           type: string
         notificationPreferences:
           type: boolean
-    SupportContact:
-      type: array
-      items:
-        type: object
-        required:
-          - email
-          - phone
-        properties:
-          email:
-            type: string
-          phone:
-            type: string
+    ContactInformation:
+      type: object
+      required:
+        - email
+        - phone
+      properties:
+        email:
+          type: string
+        phone:
+          type: string
