@@ -21,7 +21,7 @@
         <quarkus-openapi-generator-server.version>2.4.2</quarkus-openapi-generator-server.version>
 
         <compiler-plugin.version>3.13.0</compiler-plugin.version>
-        <surefire-plugin.version>3.2.5</surefire-plugin.version>
+        <surefire-plugin.version>3.3.0</surefire-plugin.version>
     </properties>
 
     <dependencyManagement>
