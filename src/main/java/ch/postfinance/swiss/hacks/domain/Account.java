@@ -7,6 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotNull;
 import org.iban4j.Iban;
 
 import java.math.BigDecimal;
@@ -28,9 +29,12 @@ public class Account extends PanacheEntity {
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
-    @Column(length = 22)
+    @NotNull
+    @Column(length = 22, nullable = false, updatable = false)
     public String iban;
 
+    @NotNull
+    @Column(nullable = false)
     public BigDecimal balance;
 
     @ManyToOne(optional = false)

@@ -15,7 +15,7 @@ public class AccountsResourceImpl implements AccountsResource {
     @Inject
     AccountService accountService;
 
-    private static AccountBalance getAccountBalance(Account a) {
+    private static AccountBalance convertToDTO(Account a) {
         var accountBalance = new AccountBalance();
         accountBalance.setIban(a.iban);
         accountBalance.setBalance(a.balanceInCentimes().toEngineeringString());
@@ -23,11 +23,16 @@ public class AccountsResourceImpl implements AccountsResource {
     }
 
     @Override
+    public AccountBalance createANewAccount() {
+        return convertToDTO(accountService.addAccount());
+    }
+
+    @Override
     @RolesAllowed("user")
     public List<AccountBalance> checkAccountBalance() {
         return accountService.currentUserAccounts()
                 .map(accounts -> accounts.stream()
-                        .map(AccountsResourceImpl::getAccountBalance)
+                        .map(AccountsResourceImpl::convertToDTO)
                         .toList())
                 .orElseThrow();
     }

@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -13,19 +14,23 @@ import java.util.UUID;
 @Table
 public class Transaction extends PanacheEntity {
 
-    @Column(length = 10)
+    @NotNull
+    @Column(length = 10, nullable = false)
     public UUID transactionId;
 
     @Lob
     @Column
     public String description;
 
-    @Column(length = 22)
+    @NotNull
+    @Column(length = 22, nullable = false)
     public String fromIban;
 
-    @Column(length = 22)
+    @NotNull
+    @Column(length = 22, nullable = false)
     public String toIban;
 
-    @Column(length = 22)
+    @NotNull
+    @Column(length = 22, nullable = false)
     public BigDecimal amount;
 }

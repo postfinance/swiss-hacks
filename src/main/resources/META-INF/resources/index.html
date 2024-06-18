@@ -38,6 +38,41 @@
             window.location.href = "/index.html";
         }
 
+        function addAccount() {
+            const tableBody = document.getElementById('balanceBody');
+
+            if (!tableBody) {
+                return;
+            }
+
+            fetch("/accounts", {
+                method: "POST",
+                headers: {
+                    "accept": "application/json",
+                },
+            })
+                .then(response => response.json())
+                .then(account => appendAccountToTableBody(account, tableBody));
+        }
+
+        function appendAccountToTableBody(account, tableBody) {
+            const tableRow = document.createElement('tr');
+            const ibanCell = document.createElement('td');
+            ibanCell.textContent = account.iban;
+            const balanceCell = document.createElement('td');
+            balanceCell.textContent = account.balance;
+            const actionCell = document.createElement('td');
+            actionCell.innerHTML = `
+                            <a href="/transaction.html?fromIban=${account.iban}">
+                                <button type="button">Transfer Funds</button>
+                            </a>`;
+
+            tableRow.appendChild(ibanCell);
+            tableRow.appendChild(balanceCell);
+            tableRow.appendChild(actionCell);
+            tableBody.appendChild(tableRow);
+        }
+
         function displayAccountInformation(data) {
             container.innerHTML = `
                         <table id="balance-table">
@@ -48,35 +83,30 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody id="balanceBody">
+                                <!-- Accounts balance will be populated here -->
+                            </tbody>
                         </table>`;
 
-            const tableBody = document.getElementById('balance-table').getElementsByTagName('tbody')[0];
+            const tableBody = document.getElementById('balanceBody');
 
             for (const account of data) {
-                const tableRow = document.createElement('tr');
-                const ibanCell = document.createElement('td');
-                ibanCell.textContent = account.iban;
-                const balanceCell = document.createElement('td');
-                balanceCell.textContent = account.balance;
-                const actionCell = document.createElement('td');
-                actionCell.innerHTML = `
-                            <a href="/transaction.html?fromIban=${account.iban}">
-                                <button type="button">Transfer Funds</button>
-                            </a>`;
-
-                tableRow.appendChild(ibanCell);
-                tableRow.appendChild(balanceCell);
-                tableRow.appendChild(actionCell);
-                tableBody.appendChild(tableRow);
+                appendAccountToTableBody(account, tableBody);
             }
+
+            container.appendChild(document.createElement("br"))
 
             const logoutButton = document.createElement("button");
             logoutButton.textContent = "Logout";
             logoutButton.addEventListener("click", logout);
 
-            container.appendChild(document.createElement("br"))
+            const addAccountButton = document.createElement("button");
+            addAccountButton.textContent = "Add Account";
+            addAccountButton.addEventListener("click", addAccount);
+
+            container.appendChild(addAccountButton)
             container.appendChild(logoutButton)
+
             container.appendChild(document.createElement("br"))
             container.appendChild(document.createElement("br"))
         }

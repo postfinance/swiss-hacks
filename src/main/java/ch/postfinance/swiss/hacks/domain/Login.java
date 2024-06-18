@@ -5,11 +5,13 @@ import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
 import io.quarkus.security.jpa.UserDefinition;
 import io.quarkus.security.jpa.Username;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -26,15 +28,26 @@ import static jakarta.persistence.CascadeType.ALL;
 })
 public class Login extends PanacheEntity {
 
+    @NotNull
     @Username
+    @Column(unique = true, nullable = false, updatable = false)
     public String username;
 
+    @NotNull
+    @Column(nullable = false, updatable = false)
     public String firstName;
 
+    @NotNull
     @Password
+    @Column(nullable = false)
     public String password;
 
+    @NotNull
+    @Column(nullable = false, updatable = false)
     public String lastName;
+
+    @NotNull
+    @Column(nullable = false, updatable = false)
     public Instant dateOfBirth;
 
     @Roles
