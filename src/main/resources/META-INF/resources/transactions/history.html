@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Transaction History</title>
+        <style>
+            table {
+                width: 50%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+
+            table, th, td {
+                border: 1px solid black;
+            }
+
+            th, td {
+                padding: 8px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Transaction History</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>From IBAN</th>
+                <th>To IBAN</th>
+                <th>Amount</th>
+            </tr>
+            </thead>
+            <tbody id="transactionHistoryBody">
+                <!-- Transaction history will be populated here -->
+            </tbody>
+        </table>
+
+        <a href="/">
+            <button type="button">Back</button>
+        </a>
+        
+        <script>
+            fetch('/transactions/history', {
+                method: 'GET',
+                credentials: 'include'
+            })
+                .then(response => response.json())
+                .then(history => {
+                    const tableBody = document.getElementById('transactionHistoryBody');
+
+                    for (const transaction of history) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${transaction.transactionId}</td>
+                            <td>${transaction.description ? transaction.description: ''}</td>
+                            <td>${transaction.fromIban}</td>
+                            <td>${transaction.toIban}</td>
+                            <td>${transaction.amount}</td>`;
+                        tableBody.appendChild(row);
+                    }
+                });
+        </script>
+    </body>
+</html>

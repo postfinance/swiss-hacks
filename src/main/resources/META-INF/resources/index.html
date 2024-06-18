@@ -57,19 +57,15 @@
 
         function appendAccountToTableBody(account, tableBody) {
             const tableRow = document.createElement('tr');
-            const ibanCell = document.createElement('td');
-            ibanCell.textContent = account.iban;
-            const balanceCell = document.createElement('td');
-            balanceCell.textContent = account.balance;
-            const actionCell = document.createElement('td');
-            actionCell.innerHTML = `
-                            <a href="/transaction.html?fromIban=${account.iban}">
-                                <button type="button">Transfer Funds</button>
-                            </a>`;
+            tableRow.innerHTML = `
+                <td>${account.iban}</td>
+                <td>${account.balance}</td>
+                <td>
+                    <a href="/transactions/new.html?fromIban=${account.iban}">
+                        <button type="button">Transfer Funds</button>
+                    </a>
+                </td>`;
 
-            tableRow.appendChild(ibanCell);
-            tableRow.appendChild(balanceCell);
-            tableRow.appendChild(actionCell);
             tableBody.appendChild(tableRow);
         }
 
@@ -98,13 +94,22 @@
 
             const logoutButton = document.createElement("button");
             logoutButton.textContent = "Logout";
+            logoutButton.type = "button"
             logoutButton.addEventListener("click", logout);
+
+            const transactionHistoryLink = document.createElement("a");
+            transactionHistoryLink.href="/transactions/history.html?"
+            transactionHistoryLink.innerHTML = `
+                <button type="button">History</button>
+                `;
 
             const addAccountButton = document.createElement("button");
             addAccountButton.textContent = "Add Account";
+            addAccountButton.type = "button"
             addAccountButton.addEventListener("click", addAccount);
 
             container.appendChild(addAccountButton)
+            container.appendChild(transactionHistoryLink)
             container.appendChild(logoutButton)
 
             container.appendChild(document.createElement("br"))

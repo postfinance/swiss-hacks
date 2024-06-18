@@ -31,6 +31,7 @@ class TransactionServiceTest {
         var login = new Login();
         login.firstName = "Bruce";
         login.lastName = "Wayne";
+        login.password = "You cannot pass.";
         login.dateOfBirth = LocalDate.parse("1939-03-30", ISO_LOCAL_DATE).atStartOfDay().toInstant(ZoneOffset.UTC);
 
         var fromAccount = newAccount(login);

@@ -1,8 +1,9 @@
 package ch.postfinance.swiss.hacks.domain;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -23,12 +24,13 @@ import static org.iban4j.CountryCode.CH;
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"iban"})
 })
-public class Account extends PanacheEntity {
+public class Account extends PanacheEntityBase {
 
     private static final int ROUNDING_SCALE = 2;
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
+    @Id
     @NotNull
     @Column(length = 22, nullable = false, updatable = false)
     public String iban;
