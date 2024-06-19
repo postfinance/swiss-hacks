@@ -1,6 +1,7 @@
 INSERT INTO Login (id, username, firstName, lastName, password, dateOfBirth, role)
-VALUES (1001, 'john.doe', 'John', 'Doe', 'password123', '1980-01-01 00:00:00', 'USER'),
-       (1002, 'jane.smith', 'Jane', 'Smith', 'password456', '1985-07-14 00:00:00', 'USER');
+VALUES (1001, 'john.doe', 'John', 'Doe', '$2a$10$I8TrCWJrPb7AxldXP4528e7ZvuOFhFqge9A3sx79PdKvgIekmkQaq', '1980-01-01 00:00:00', 'user'), -- strong-password
+       (1002, 'jane.smith', 'Jane', 'Smith', '$2a$10$Hho1k.8IULBi8hrzj1NpEuNMKqOS6ZDXetdp/O4ZbL9dNZoxj3lWa', '1985-07-14 00:00:00', 'user'), -- you-dont-guess-me
+       (1002, 'jimmy.allen', 'Jimmy', 'Allen', '$2a$10$kLuUFZC0fnLHK7XuwWc/k.eDC769uEggOpSVImB3DTGSofa7Ux5KO', '1990-04-27 00:00:00', 'admin'); -- secure-secret
 
 INSERT INTO Account (iban, balance, login_id)
 VALUES ('CH9300762011623852957', 1234.56, 1001),

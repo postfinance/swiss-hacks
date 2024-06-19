@@ -1,74 +1,112 @@
-# swiss-hacks-2024
+# Swiss Hacks 2024
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework. It requires Java 21 or above.
+This project uses Quarkus, the Supersonic Subatomic Java Framework. Java 21 or above is required for building and
+running.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io.
+**Learn more about Quarkus:** https://quarkus.io.
 
-If you're
-running [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/download/?section=windows),
-it's best to install
-the [Quarkus Tools plugin](https://plugins.jetbrains.com/plugin/13234-quarkus-tools) from the
-marketplace.
+We've published a container image for easy local execution (replace `podman`
+for [`docker` for Windows](https://docs.docker.com/desktop/install/windows-install)):
 
-## Running the application in dev mode
+```shell
+podman run ghcr.io/postfinance/swiss-hacks-2024:latest
+```
 
-You can run your application in dev mode that enables live coding. Either within your IDE or by
-using:
+See available versions [here](https://github.com/postfinance/Swiss-Hacks-2024/tags).
+
+**Pre-created Login Credentials**
+
+For your convenience, we've pre-created login credentials with some sample accounts and transactions:
+
+| Username    | Password          | Role  |
+|-------------|-------------------|-------|
+| john.doe    | strong-password   | User  |
+| jane.smith  | you-dont-guess-me | User  |
+| jimmy.allen | secure-secret     | Admin |
+
+## The Challenge
+
+We challenge you to leverage Generative AI and transform the way APIs are tested in the banking sector. Imagine
+innovative GenAI applications for end-to-end testing that utilize our provided resources:
+
+Precise standards: [./src/main/resources/openapi/openapi.yml]
+Use case definitions: [./spec/Requirements.md]
+
+The goal is to develop AI that intelligently suggests improvements during the development/building/testing phase (any or
+multiple).
+
+## Local Development
+
+1. Clone this repository:
+
+```shell
+git clone git@github.com:postfinance/Swiss-Hacks-2024.git
+```
+
+2. Navigate to the project directory:
+
+```shell
+cd Swiss-Hacks-2024
+```
+
+3. Build the application using Maven:
+
+```shell
+./mvnw package
+```
+
+### IDE Integration
+
+For IntelliJ IDEA Community Edition, install the Quarkus Tools plugin from the
+marketplace: https://plugins.jetbrains.com/plugin/13234-quarkus-tools.
+
+### Running the Application
+
+#### Dev Mode (Live Coding):
+
+* Within your IDE or using:
 
 ```shell script
 ./mvnw compile quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus ships with a Dev UI, which is available in dev mode only
-> at http://localhost:8080/q/dev.
+* Access the Dev UI at http://localhost:8080/q/dev (available only in dev mode).
 
-## Packaging and running the application
+#### Packaged Application:
 
-The application can be packaged using:
+1. Package the application:
 
 ```shell script
 ./mvnw package
 ```
 
-It produces the `quarkus-run.jar` file in the [`target/quarkus-app/`](target/quarkus-app) directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into
-the [`target/quarkus-app/lib/`](target/quarkus-app/lib) directory.
+2. This creates `quarkus-run.jar` in `target/quarkus-app/`.
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+3. Run the application:
 
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
+```shell
+java -jar target/quarkus-app/quarkus-run.jar
 ```
 
-The application, packaged as an _über-jar_, is now runnable
-using `java -jar target/swiss-hacks-2024-*-runner.jar`.
+#### Creating a Native Executable
 
-## Creating a native executable
-
-You can create a native executable using:
+1. Build the native executable:
 
 ```shell script
 ./mvnw package -Dnative
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container
-using:
+2. Alternatively, build it in a container if GraalVM is not installed:
 
 ```shell script
 ./mvnw package -Dnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./target/swiss-hacks-2024-*-runner`
+3. Run the native executable:
+
+```shell
+./target/swiss-hacks-2024-*-runner
+```
 
 If you want to learn more about building native executables, please
 consult https://quarkus.io/guides/maven-tooling.
-
-## Provided Code
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
