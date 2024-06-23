@@ -5,6 +5,7 @@ import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.BadRequestException;
 
 import java.util.Optional;
 import java.util.Set;
@@ -34,5 +35,24 @@ public class AccountService {
         login.persist();
 
         return account;
+    }
+
+    @Transactional
+    public void removeAccount(String iban, String transferTo) {
+        Optional<Account> accountToDelete = getUserAccount(iban);
+        Optional<Account> transferAccount = getUserAccount(transferTo);
+
+        if (accountToDelete.isEmpty() || transferAccount.isEmpty()) {
+            throw new BadRequestException("You are not allowed to remove this account!");
+        }
+
+        transferAccount.get().balance = transferAccount.get().balance.add(accountToDelete.get().balance);
+        accountToDelete.get().delete();
+        transferAccount.get().persist();
+    }
+
+    private Optional<Account> getUserAccount(String iban) {
+        return currentUserAccounts()
+                .flatMap(accounts -> accounts.stream().filter(account -> account.iban.equals(iban)).findFirst());
     }
 }

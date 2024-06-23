@@ -33,8 +33,22 @@ public class TransactionService {
         return account.balance.compareTo(amount) >= 0;
     }
 
+    private static BigDecimal validateAndConstructAmount(UUID transactionId, Double amount) throws IllegalTransactionException {
+        var transactionAmount = BigDecimal.valueOf(amount);
+        transactionAmount = transactionAmount.setScale(2, HALF_EVEN);
+
+        var lastTwoDigits = transactionAmount.multiply(new BigDecimal(100)).remainder(TEN).setScale(0, HALF_EVEN);
+
+        if (transactionAmount.scale() > 2
+                || (!lastTwoDigits.equals(BigDecimal.valueOf(5)) && !lastTwoDigits.equals(ZERO))) {
+            throw new IllegalTransactionException(transactionId, FAILED_INVALID_AMOUNT);
+        }
+
+        return transactionAmount;
+    }
+
     @Transactional
-    public String transfer(String fromIban, String toIban, Double amount, String description) throws IllegalTransactionException {
+    public UUID transfer(String fromIban, String toIban, Double amount, String description) throws IllegalTransactionException {
         var transactionId = UUID.randomUUID();
 
         if (!isAccountOfCurrentUser(fromIban)) {
@@ -70,21 +84,7 @@ public class TransactionService {
 
         transaction.persist();
 
-        return transactionId.toString();
-    }
-
-    private static BigDecimal validateAndConstructAmount(UUID transactionId, Double amount) throws IllegalTransactionException {
-        var transactionAmount = BigDecimal.valueOf(amount);
-        transactionAmount = transactionAmount.setScale(2, HALF_EVEN);
-
-        var lastTwoDigits = transactionAmount.multiply(new BigDecimal(100)).remainder(TEN).setScale(0, HALF_EVEN);
-
-        if (transactionAmount.scale() > 2
-                || (!lastTwoDigits.equals(BigDecimal.valueOf(5)) && !lastTwoDigits.equals(ZERO))) {
-            throw new IllegalTransactionException(transactionId, FAILED_INVALID_AMOUNT);
-        }
-
-        return transactionAmount;
+        return transactionId;
     }
 
     private boolean isAccountOfCurrentUser(String fromIban) {

@@ -1,19 +1,20 @@
 package ch.postfinance.swiss.hacks.service;
 
-import static ch.postfinance.swiss.hacks.domain.Account.newAccount;
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.postfinance.swiss.hacks.domain.Login;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import org.junit.jupiter.api.Test;
+
+import static ch.postfinance.swiss.hacks.domain.Account.newAccount;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @QuarkusTest
 class TransactionServiceTest {
@@ -52,7 +53,7 @@ class TransactionServiceTest {
         var description = "Lorem ipsum";
 
         var transactionId = fixture.transfer(fromAccount.iban, toAccount.iban, transactionAmount, description);
-        assertThat(transactionId).isNotEmpty();
+        assertThat(transactionId).isNotNull();
 
         assertThat(fromAccount.balance).isEqualTo(fromBalance.subtract(BigDecimal.valueOf(transactionAmount)));
         assertThat(toAccount.balance).isEqualTo(toBalance.add(BigDecimal.valueOf(transactionAmount)));

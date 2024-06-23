@@ -4,6 +4,7 @@ import ch.postfinance.swiss.hacks.resource.beans.CustomerRegistration;
 import ch.postfinance.swiss.hacks.resource.beans.PasswordChange;
 import ch.postfinance.swiss.hacks.resource.beans.RegistrationResponse;
 import ch.postfinance.swiss.hacks.service.LoginService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 
 import java.time.Instant;
@@ -32,6 +33,7 @@ public class CustomersResourceImpl implements CustomersResource {
     }
 
     @Override
+    @RolesAllowed("user")
     public void changePassword(PasswordChange data) {
         throw new UnsupportedOperationException("Not supported yet.");
     }

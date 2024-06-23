@@ -6,6 +6,8 @@ import ch.postfinance.swiss.hacks.service.AccountService;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class AccountsResourceImpl implements AccountsResource {
     }
 
     @Override
+    @RolesAllowed("user")
     public AccountBalance createANewAccount() {
         return convertToDTO(accountService.addAccount());
     }
@@ -35,5 +38,11 @@ public class AccountsResourceImpl implements AccountsResource {
                         .map(AccountsResourceImpl::convertToDTO)
                         .toList())
                 .orElseThrow();
+    }
+
+    @Override
+    @RolesAllowed("user")
+    public void removeAccount(@PathParam("iban") String iban, @QueryParam("transferTo") String transferTo) {
+        accountService.removeAccount(iban, transferTo);
     }
 }

@@ -27,7 +27,7 @@ public class TransactionResourceImpl implements TransactionsResource {
 
     private static TransactionHistory convertToDTO(Transaction transaction) {
         var transactionHistory = new TransactionHistory();
-        transactionHistory.setTransactionId(transaction.transactionId.toString());
+        transactionHistory.setTransactionId(transaction.transactionId);
         transactionHistory.setFromIban(transaction.fromIban);
         transactionHistory.setToIban(transaction.toIban);
         transactionHistory.setAmount(transaction.amount.doubleValue());
@@ -48,7 +48,7 @@ public class TransactionResourceImpl implements TransactionsResource {
         } catch (IllegalTransactionException e) {
             log.warn("Submitting transaction failed!", e);
 
-            transferResponse.setTransactionId(e.getTransactionId().toString());
+            transferResponse.setTransactionId(e.getTransactionId());
             transferResponse.setStatus(e.getStatus());
 
             throw new BadRequestException(
@@ -59,7 +59,7 @@ public class TransactionResourceImpl implements TransactionsResource {
     }
 
     @Override
-    @RolesAllowed("user")
+    @RolesAllowed({"admin", "user"})
     public List<TransactionHistory> viewTransactionHistory() {
         return transactionService.getAllTransactions().stream()
                 .map(TransactionResourceImpl::convertToDTO)

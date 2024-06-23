@@ -58,6 +58,28 @@ paths:
                   $ref: '#/components/schemas/AccountBalance'
         '401':
           description: Unauthorized
+  /accounts/{iban}:
+    delete:
+      summary: Remove account
+      description: Remove the specified customer's account.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: iban
+          in: path
+          schema:
+            type: string
+            example: CH6800697891274922199
+        - name: transferTo
+          in: query
+          schema:
+            type: string
+            example: CH4642429394097630741
+      responses:
+        '200':
+          description: Account deleted
+        '400':
+          description: Unauthorized
   /transactions/transfer:
     post:
       summary: Transfer funds
@@ -176,6 +198,8 @@ components:
         balance:
           type: string
           format: decimal
+          example: 1234.15
+          description: Must be a valid Swiss francs amount!
     FundTransfer:
       type: object
       required:
@@ -192,7 +216,7 @@ components:
         amount:
           type: number
           format: float
-          example: 1234.56
+          example: 1234.15
           description: Must be a valid Swiss francs amount!
         description:
           type: string
@@ -201,6 +225,7 @@ components:
       properties:
         transactionId:
           type: string
+          format: uuid
         status:
           type: string
           enum:
@@ -219,6 +244,7 @@ components:
       properties:
         transactionId:
           type: string
+          format: uuid
         fromIban:
           type: string
           example: CH2089144756348165443
@@ -228,6 +254,8 @@ components:
         amount:
           type: number
           format: float
+          example: 1234.15
+          description: Must be a valid Swiss francs amount!
         description:
           type: string
     PasswordChange:
@@ -242,13 +270,6 @@ components:
         newPassword:
           type: string
           format: password
-    AccountSettingsUpdate:
-      type: object
-      properties:
-        contactInfo:
-          type: string
-        notificationPreferences:
-          type: boolean
     ContactInformation:
       type: object
       required:
