@@ -11,6 +11,9 @@ import jakarta.ws.rs.QueryParam;
 
 import java.util.List;
 
+import static ch.postfinance.swiss.hacks.domain.Login.ROLE_ADMIN;
+import static ch.postfinance.swiss.hacks.domain.Login.ROLE_USER;
+
 @Authenticated
 public class AccountsResourceImpl implements AccountsResource {
 
@@ -25,13 +28,13 @@ public class AccountsResourceImpl implements AccountsResource {
     }
 
     @Override
-    @RolesAllowed("user")
+    @RolesAllowed(ROLE_USER)
     public AccountBalance createANewAccount() {
         return convertToDTO(accountService.addAccount());
     }
 
     @Override
-    @RolesAllowed("user")
+    @RolesAllowed({ROLE_ADMIN, ROLE_USER})
     public List<AccountBalance> checkAccountBalance() {
         return accountService.currentUserAccounts()
                 .map(accounts -> accounts.stream()
@@ -41,7 +44,7 @@ public class AccountsResourceImpl implements AccountsResource {
     }
 
     @Override
-    @RolesAllowed("user")
+    @RolesAllowed(ROLE_USER)
     public void removeAccount(@PathParam("iban") String iban, @QueryParam("transferTo") String transferTo) {
         accountService.removeAccount(iban, transferTo);
     }

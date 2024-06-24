@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
+import static ch.postfinance.swiss.hacks.domain.Login.ROLE_ADMIN;
+import static ch.postfinance.swiss.hacks.domain.Login.ROLE_USER;
 import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.SUCCESS;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -36,7 +38,7 @@ public class TransactionResourceImpl implements TransactionsResource {
     }
 
     @Override
-    @RolesAllowed("user")
+    @RolesAllowed(ROLE_USER)
     public TransferResponse transferFunds(FundTransfer fundTransfer) {
         var transferResponse = new TransferResponse();
 
@@ -59,7 +61,7 @@ public class TransactionResourceImpl implements TransactionsResource {
     }
 
     @Override
-    @RolesAllowed({"admin", "user"})
+    @RolesAllowed({ROLE_ADMIN, ROLE_USER})
     public List<TransactionHistory> viewTransactionHistory() {
         return transactionService.getAllTransactions().stream()
                 .map(TransactionResourceImpl::convertToDTO)

@@ -57,7 +57,7 @@ As a customer, I want to transfer funds between my accounts or to another accoun
 - **Then** the funds should be transferred successfully
 - **And** I receive confirmation of the transaction
 
-## TODO: User Story 7: Online Banking Account Transaction History
+## User Story 7: Online Banking Account Transaction History
 As a customer, I want to view my transaction history for tracking purposes.
 
 ### Scenario:
@@ -65,7 +65,7 @@ As a customer, I want to view my transaction history for tracking purposes.
 - **When** I navigate to the transaction history page
 - **Then** I should see a list of all my transactions
 
-## TODO: User Story 8: Transaction History
+## User Story 8: Transaction History
 As a bank advisor, I want to view a global transaction history for tracking purposes.
 
 ### Scenario:

@@ -2,6 +2,8 @@ package ch.postfinance.swiss.hacks.service;
 
 import ch.postfinance.swiss.hacks.domain.Account;
 import ch.postfinance.swiss.hacks.domain.Transaction;
+import io.quarkus.panache.common.Parameters;
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -11,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static ch.postfinance.swiss.hacks.SecurityUtils.currentLogin;
+import static ch.postfinance.swiss.hacks.domain.Login.ROLE_ADMIN;
 import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.FAILED_INVALID_ACCOUNT_ACCESS;
 import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.FAILED_INVALID_AMOUNT;
 import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.FAILED_NOT_ENOUGH_FUNDS;
@@ -24,6 +28,9 @@ public class TransactionService {
 
     @Inject
     AccountService accountService;
+
+    @Inject
+    SecurityIdentity securityIdentity;
 
     private static Optional<Account> getAccountForIban(String iban) {
         return Account.find("iban", iban).singleResultOptional();
@@ -95,6 +102,12 @@ public class TransactionService {
     }
 
     public List<Transaction> getAllTransactions() {
-        return Transaction.findAll().list();
+        var login = currentLogin(securityIdentity).orElseThrow();
+
+        if (login.role.equals(ROLE_ADMIN)) {
+            return Transaction.findAll().list();
+        }
+
+        return Transaction.find("fromIban in :fromIban", Parameters.with("fromIban", login.accounts.stream().map(account -> account.iban).toList())).list();
     }
 }

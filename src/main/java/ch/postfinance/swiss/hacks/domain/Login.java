@@ -28,6 +28,9 @@ import static jakarta.persistence.CascadeType.ALL;
 })
 public class Login extends PanacheEntity {
 
+    public static final String ROLE_ADMIN = "admin";
+    public static final String ROLE_USER = "user";
+
     @NotNull
     @Username
     @Column(unique = true, nullable = false, updatable = false)
@@ -62,7 +65,7 @@ public class Login extends PanacheEntity {
         login.firstName = firstName.trim();
         login.lastName = lastName.trim();
         login.dateOfBirth = dateOfBirth;
-        login.role = "user";
+        login.role = ROLE_USER;
         login.accounts.add(newAccount(login));
         login.persist();
         return login;

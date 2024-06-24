@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 
+import static ch.postfinance.swiss.hacks.domain.Login.ROLE_USER;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 public class CustomersResourceImpl implements CustomersResource {
@@ -33,7 +34,7 @@ public class CustomersResourceImpl implements CustomersResource {
     }
 
     @Override
-    @RolesAllowed("user")
+    @RolesAllowed(ROLE_USER)
     public void changePassword(PasswordChange data) {
         throw new UnsupportedOperationException("Not supported yet.");
     }

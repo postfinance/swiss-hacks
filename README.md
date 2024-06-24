@@ -112,9 +112,12 @@ If you want to learn more about building native executables, please
 consult https://quarkus.io/guides/maven-tooling.
 
 ### OpenAI
-For access to OpenAI, please ask the mentors to receive a token.
 
-*Example:*
+For access to [OpenAI Platform](https://openai.com/api/), please ask the mentors to receive a token. You're free to use
+any other language model on your on behalf.
+
+**Example using Python:**
+
 ```python 
 from openai import OpenAI
 client = OpenAI(api_key="<YOUR_TOKEN>")
@@ -130,6 +133,6 @@ response = client.chat.completions.create(
 )
 ```
 
-
 ### FAQ
-TBD
+
+// TBD
