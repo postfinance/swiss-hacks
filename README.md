@@ -110,3 +110,26 @@ java -jar target/quarkus-app/quarkus-run.jar
 
 If you want to learn more about building native executables, please
 consult https://quarkus.io/guides/maven-tooling.
+
+### OpenAI
+For access to OpenAI, please ask the mentors to receive a token.
+
+*Example:*
+```python 
+from openai import OpenAI
+client = OpenAI(api_key="<YOUR_TOKEN>")
+
+response = client.chat.completions.create(
+  model="gpt-4-turbo",
+  messages=[
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Who won the world series in 2020?"},
+    {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
+    {"role": "user", "content": "Where was it played?"}
+  ]
+)
+```
+
+
+### FAQ
+TBD
