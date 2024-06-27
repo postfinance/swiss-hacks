@@ -29,11 +29,13 @@ For your convenience, we've pre-created login credentials with some sample accou
 We challenge you to leverage Generative AI and transform the way APIs are tested in the banking sector. Imagine
 innovative GenAI applications for end-to-end testing that utilize our provided resources:
 
-Precise standards: [./src/main/resources/openapi/openapi.yml]
-Use case definitions: [./spec/Requirements.md]
+* Precise standards: [./src/main/resources/openapi/openapi.yml](./src/main/resources/openapi/openapi.yml)
+* Use case definitions: [./spec/Requirements.md](./spec/Requirements.md)
 
 The goal is to develop AI that intelligently suggests improvements during the development/building/testing phase (any or
 multiple).
+
+The [criteria by which we will measure success](./spec/Criteria.md) is documented as well.
 
 ## Local Development
 
