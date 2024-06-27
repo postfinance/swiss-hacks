@@ -55,6 +55,23 @@
                 .then(account => appendAccountToTableBody(account, tableBody));
         }
 
+        function deleteAccount(iban) {
+            console.log('delete account', iban)
+            if (!iban) {
+                return;
+            }
+
+            const transferTo = prompt("Transfer balance to:");
+            if (!transferTo) {
+                return;
+            }
+
+            fetch(`/accounts/${iban}?transferTo=${transferTo}`, {
+                method: "DELETE",
+            })
+                .then(_ => location.reload());
+        }
+
         function appendAccountToTableBody(account, tableBody) {
             const tableRow = document.createElement('tr');
             tableRow.innerHTML = `
@@ -64,6 +81,7 @@
                     <a href="/transactions/new.html?fromIban=${account.iban}">
                         <button type="button">Transfer Funds</button>
                     </a>
+                    <button type="button" onclick="deleteAccount('${account.iban}')">Delete Account</button>
                 </td>`;
 
             tableBody.appendChild(tableRow);

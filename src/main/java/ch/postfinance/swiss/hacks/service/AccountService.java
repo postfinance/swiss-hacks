@@ -47,8 +47,8 @@ public class AccountService {
         }
 
         transferAccount.get().balance = transferAccount.get().balance.add(accountToDelete.get().balance);
-        accountToDelete.get().delete();
         transferAccount.get().persist();
+        accountToDelete.get().delete();
     }
 
     private Optional<Account> getUserAccount(String iban) {
