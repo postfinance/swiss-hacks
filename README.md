@@ -12,7 +12,7 @@ for [`docker` for Windows](https://docs.docker.com/desktop/install/windows-insta
 podman run ghcr.io/postfinance/swiss-hacks-2024:latest
 ```
 
-See available versions [here](https://github.com/postfinance/Swiss-Hacks-2024/tags).
+See available versions [here](https://github.com/postfinance/swiss-hacks/tags).
 
 **Pre-created Login Credentials**
 
@@ -42,13 +42,13 @@ The [criteria by which we will measure success](./spec/Criteria.md) is documente
 1. Clone this repository:
 
 ```shell
-git clone git@github.com:postfinance/Swiss-Hacks-2024.git
+git clone git@github.com:postfinance/swiss-hacks.git
 ```
 
 2. Navigate to the project directory:
 
 ```shell
-cd Swiss-Hacks-2024
+cd swiss-hacks
 ```
 
 3. Build the application using Maven:
