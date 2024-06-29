@@ -258,6 +258,9 @@ components:
           description: Must be a valid Swiss francs amount!
         description:
           type: string
+        persistedAt:
+          type: string
+          format: date-time
     PasswordChange:
       type: object
       required:

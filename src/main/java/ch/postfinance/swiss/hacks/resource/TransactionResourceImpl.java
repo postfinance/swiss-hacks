@@ -12,11 +12,13 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
 import org.slf4j.Logger;
 
+import java.util.Date;
 import java.util.List;
 
 import static ch.postfinance.swiss.hacks.domain.Login.ROLE_ADMIN;
 import static ch.postfinance.swiss.hacks.domain.Login.ROLE_USER;
 import static ch.postfinance.swiss.hacks.resource.beans.TransferResponse.Status.SUCCESS;
+import static java.util.Comparator.comparing;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Authenticated
@@ -33,7 +35,8 @@ public class TransactionResourceImpl implements TransactionsResource {
         transactionHistory.setFromIban(transaction.fromIban);
         transactionHistory.setToIban(transaction.toIban);
         transactionHistory.setAmount(transaction.amount.doubleValue());
-        transactionHistory.setDescription(transactionHistory.getDescription());
+        transactionHistory.setDescription(transaction.description);
+        transactionHistory.setPersistedAt(Date.from(transaction.persistedAt));
         return transactionHistory;
     }
 
@@ -65,6 +68,7 @@ public class TransactionResourceImpl implements TransactionsResource {
     public List<TransactionHistory> viewTransactionHistory() {
         return transactionService.getAllTransactions().stream()
                 .map(TransactionResourceImpl::convertToDTO)
+                .sorted(comparing(TransactionHistory::getPersistedAt))
                 .toList();
     }
 }

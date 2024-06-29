@@ -9,10 +9,12 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static ch.postfinance.swiss.hacks.domain.Login.ROLE_ADMIN;
 import static ch.postfinance.swiss.hacks.domain.Login.ROLE_USER;
+import static java.util.Comparator.comparing;
 
 @Authenticated
 public class AccountsResourceImpl implements AccountsResource {
@@ -39,6 +41,7 @@ public class AccountsResourceImpl implements AccountsResource {
         return accountService.currentUserAccounts()
                 .map(accounts -> accounts.stream()
                         .map(AccountsResourceImpl::convertToDTO)
+                        .sorted(comparing(AccountBalance::getIban))
                         .toList())
                 .orElseThrow();
     }

@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -33,4 +34,8 @@ public class Transaction extends PanacheEntity {
     @NotNull
     @Column(length = 22, nullable = false)
     public BigDecimal amount;
+
+    @NotNull
+    @Column
+    public Instant persistedAt;
 }

@@ -35,6 +35,7 @@
                 <th>From IBAN</th>
                 <th>To IBAN</th>
                 <th>Amount</th>
+                <th>Date</th>
             </tr>
             </thead>
             <tbody id="transactionHistoryBody">
@@ -62,7 +63,8 @@
                             <td>${transaction.description ? transaction.description: ''}</td>
                             <td>${transaction.fromIban}</td>
                             <td>${transaction.toIban}</td>
-                            <td>${transaction.amount}</td>`;
+                            <td>${transaction.amount}</td>
+                            <td>${transaction.persistedAt}</td>`;
                         tableBody.appendChild(row);
                     }
                 });
