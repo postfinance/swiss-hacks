@@ -10,7 +10,7 @@ paths:
   /customers/register:
     post:
       summary: Register a new customer
-      description: Allows a new customer to register for an online banking account.
+      description: Allows a new customer to register for an online banking account. U can later login using the returned credentials.
       requestBody:
         required: true
         content:
