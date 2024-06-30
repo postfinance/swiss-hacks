@@ -6,9 +6,9 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.stringContainsInOrder;
 
 @QuarkusTest
 public class AccountsResourceTest {
@@ -51,7 +51,7 @@ public class AccountsResourceTest {
                 .post("/j_security_check")
                 .then()
                 .statusCode(302)
-                .header("location", contains("/index.html"));
+                .header("location", stringContainsInOrder("/index.html"));
     }
 
     @Test
