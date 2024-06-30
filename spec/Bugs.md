@@ -8,11 +8,13 @@ known by now.
 - [Wrong Response Code](#wrong-response-code)
 - [Accounts cannot be deleted](#accounts-cannot-be-deleted)
 - [Invalid Registration Validation](#invalid-registration-validation)
+- [New Accounts with random Balance](#new-accounts-with-random-balance)
 
 ### Wrong Response Code
 
 This bug is related to any endpoint specifying a success response code other than HTTP 200 (
-see [`openapi.yml`](../src/main/resources/openapi/openapi.yml)).
+see [`openapi.yml`](../src/main/resources/openapi/openapi.yml)). It is a mismatch between the technical (OpenAPI)
+specification and the implementation.
 
 **Current (falsy) behavior**: The endpoint does always return an HTTP 200 response code.
 
@@ -23,7 +25,8 @@ the [`AccountsResourceTest`](../src/test/java/ch/postfinance/swiss/hacks/resourc
 
 ### Accounts cannot be deleted
 
-This bug is related to "User Story 5: Delete account" and the `DELETE /accounts/{iban}` endpoint.
+This bug is related to "User Story 5: Delete account" and the `DELETE /accounts/{iban}` endpoint. It is a mismatch
+between specification and implementation.
 
 **Current (falsy) behavior**: When I delete an account and transfer the remaining money to another one, the deleted
 account vanishes.
@@ -35,7 +38,8 @@ Basically, with this bug, you can stack your money endlessly.
 
 ### Invalid Registration Validation
 
-This bug is related to "User Story 1: Customer Registration" and the `POST /customers/register` endpoint.
+This bug is related to "User Story 1: Customer Registration" and the `POST /customers/register` endpoint. It is a
+mismatch between the technical (OpenAPI) specification and the implementation.
 
 **Current (falsy) behavior**: The backend does not validate the inputs from the API, it just suspects that all
 parameters are present. That results in an internal server error and an HTTP 500 response code, if one is not present.
@@ -44,3 +48,15 @@ parameters are present. That results in an internal server error and an HTTP 500
 
 There has been a `TODO` in the [`LoginService`](../src/main/java/ch/postfinance/swiss/hacks/service/LoginService.java)
 that stated out the missing implementation.
+
+### New Accounts with random Balance
+
+This bug is related to "User Story 4: Add account" and the `POST /accounts` endpoint. It is a mismatch between
+specification and implementation.
+
+**Current (falsy) behavior**: A new account with 0 balance will be added to the online banking account.
+
+**Expected (true) behavior**: The new account receives a random balance between 1'000 and 10'000.
+
+The root case is the implementation
+of [`Account#newAccount(Login)`](../src/main/java/ch/postfinance/swiss/hacks/domain/Account.java).
