@@ -36,7 +36,7 @@ As a customer, I want to be able to add a new account, so I can have accounts fo
 - **And** open a new account
 - **Then** A new account with 0 balance will be related to my login
 
-## TODO: User Story 5: Delete account
+## User Story 5: Delete account
 As a customer, I want to be able to delete any of my accounts, so I can keep a purposeful portfolio.
 
 ### Scenario:

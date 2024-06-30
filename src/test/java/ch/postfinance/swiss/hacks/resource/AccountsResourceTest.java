@@ -1,4 +1,4 @@
-package ch.postfinance.swiss.hacks.service;
+package ch.postfinance.swiss.hacks.resource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 @QuarkusTest
-public class CustomerApiTest {
+public class AccountsResourceTest {
 
     @Test
     public void testSuccessfulRegistration() {
