@@ -1,20 +1,20 @@
 package ch.postfinance.swiss.hacks.resource;
 
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Test;
 
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.stringContainsInOrder;
 
 @QuarkusTest
-public class AccountsResourceTest {
+class AccountsResourceTest {
 
     @Test
-    public void testSuccessfulRegistration() {
+    void testSuccessfulRegistration() {
         // Define customer data
         String firstName = "Foo";
         String lastName = "Bar";
@@ -28,14 +28,13 @@ public class AccountsResourceTest {
                 "}", firstName, lastName, dateOfBirth);
 
         // Send POST request and verify response
-        String response = RestAssured.given()
+        String response = given()
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .post("/customers/register")
                 .then()
                 .statusCode(200) // TODO: this should be 201 according to spec!
                 .body("username", equalTo((firstName + "." + lastName).toLowerCase()))
-                // Replace "expected_password" with the actual password generation logic
                 .body("password", notNullValue())
                 .extract().asString();
 
@@ -44,7 +43,7 @@ public class AccountsResourceTest {
         String password = JsonPath.from(response).getString("password");
 
         // Send login request with extracted username and password
-        RestAssured.given()
+        given()
                 // .contentType(ContentType.FORM)  // Use form data for login
                 .formParam("j_username", username)
                 .formParam("j_password", password)
@@ -55,7 +54,7 @@ public class AccountsResourceTest {
     }
 
     @Test
-    public void testMissingRequiredField() {
+    void testMissingRequiredField() {
         // Define customer data with missing first name
         String lastName = "Doe";
         String dateOfBirth = "2000-01-01";
@@ -67,7 +66,7 @@ public class AccountsResourceTest {
                 "}", lastName, dateOfBirth);
 
         // Send POST request and verify response
-        RestAssured.given()
+        given()
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .post("/customers/register")

@@ -1,7 +1,6 @@
 package ch.postfinance.swiss.hacks.service;
 
 import ch.postfinance.swiss.hacks.domain.Login;
-import io.quarkus.security.identity.SecurityIdentity;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
@@ -18,9 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @QuarkusTest
 class TransactionServiceTest {
-
-    @Inject
-    SecurityIdentity securityIdentity;
 
     @Inject
     TransactionService fixture;
@@ -45,8 +41,6 @@ class TransactionServiceTest {
 
         var fromBalance = fromAccount.balance;
         var toBalance = toAccount.balance;
-
-        securityIdentity.getPrincipal();
 
         var transactionAmount = 200.00;
 

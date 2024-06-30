@@ -37,5 +37,5 @@ public class Transaction extends PanacheEntity {
 
     @NotNull
     @Column
-    public Instant persistedAt;
+    public Instant persistedAt = Instant.now();
 }
