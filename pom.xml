@@ -17,7 +17,7 @@
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.version>3.12.0</quarkus.platform.version>
 
-        <iban4j.version>3.2.8-RELEASE</iban4j.version>
+        <iban4j.version>3.2.9-RELEASE</iban4j.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <quarkus-openapi-generator-server.version>2.4.2</quarkus-openapi-generator-server.version>
 
